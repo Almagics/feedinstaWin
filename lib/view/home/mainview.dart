@@ -101,8 +101,8 @@ class _MainViewState extends State<MainView> {
                         ),
                       ),
                       GestureDetector(
-                        onDoubleTap: (){
-
+                        onTap: (){
+                          Navigator.pushReplacementNamed(context, Routes.comAnlysisList);
                         },
                         child: const Card(
 

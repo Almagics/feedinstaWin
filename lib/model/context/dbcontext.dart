@@ -45,7 +45,7 @@ class Dbcon{
         ''');
 
 
-        // Create raw_ananlysis_tbl
+        // Create com_analysis_tbl
         await db.execute('''
         
         
@@ -53,15 +53,50 @@ class Dbcon{
         CREATE TABLE "raw_ananlysis_tbl" (
 	"raw_ana_id"	INTEGER NOT NULL UNIQUE,
 	"raw_id"	INTEGER,
-	"elememt_id"	INTEGER,
+	"element_id"	INTEGER,
 	"element_name" TEXT,
 	"raw_ana_qty"	REAL,
 	PRIMARY KEY("raw_ana_id" AUTOINCREMENT),
 	FOREIGN KEY (raw_id) REFERENCES raw_item_tbl(item_id),
-  FOREIGN KEY (elememt_id) REFERENCES analysis_element_tbl(element_id)
+  FOREIGN KEY (element_id) REFERENCES analysis_element_tbl(element_id)
 );
      
         ''');
+
+
+
+        // Create com_analysis_tbl
+        await db.execute('''
+        
+        
+        CREATE TABLE "com_analysis_tbl" (
+	"com_ana_id"	INTEGER NOT NULL UNIQUE,
+	"com_ana_name"	TEXT,
+	"com_ana_remarks"	TEXT,
+	PRIMARY KEY("com_ana_id" AUTOINCREMENT)
+);
+     
+        ''');
+
+
+
+        // Create com_analysis_body
+        await db.execute('''
+        
+       CREATE TABLE "com_analysis_body" (
+	"com_ana_body_id"	INTEGER NOT NULL UNIQUE,
+	"com_ana_id"	INTEGER,
+	"element_id"	INTEGER,
+	"ana_body_qty"	REAL,
+	"element_name"	TEXT,
+	PRIMARY KEY("com_ana_body_id" AUTOINCREMENT),
+	FOREIGN KEY (element_id) REFERENCES analysis_element_tbl(element_id),
+  FOREIGN KEY (com_ana_id) REFERENCES com_analysis_tbl(com_ana_id)
+);
+     
+        ''');
+
+
       },
     );
   }

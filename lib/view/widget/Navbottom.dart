@@ -42,12 +42,6 @@ class _BottomNavBarDemoState extends State<BottomNavBarDemo> {
       case 2:
         return new AddItemView();
 
-      case 3:
-        return new AddItemView();
-
-
-      case 4:
-        return new AddItemView();
 
 
       default:
@@ -84,8 +78,8 @@ class _BottomNavBarDemoState extends State<BottomNavBarDemo> {
           Icon(Icons.home, size: 30),
           Icon(Icons.favorite_border, size: 30),
           Icon(Icons.supervised_user_circle, size: 30),
-          Icon(Icons.notifications_active, size: 30),
-          Icon(Icons.more_vert, size: 30),
+
+
         ],
         color: Colors.grey,
         buttonBackgroundColor: Colors.grey,

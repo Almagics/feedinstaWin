@@ -4,9 +4,12 @@
 import 'dart:ffi';
 
 import 'package:feedinsta/model/analysisRawModel.dart';
+import 'package:feedinsta/model/comAnlysisBodyModel.dart';
 import 'package:feedinsta/model/elementModel.dart';
 import 'package:feedinsta/model/itemmodel.dart';
+import 'package:feedinsta/service/ComAnlysisService.dart';
 import 'package:feedinsta/service/analysisRawService.dart';
+import 'package:feedinsta/service/comAnlysisBodyService.dart';
 import 'package:feedinsta/service/elementService.dart';
 import 'package:feedinsta/service/itemService.dart';
 import 'package:flutter/material.dart';
@@ -22,17 +25,17 @@ import '../widget/app_text_form_filed.dart';
 
 
 
-class AddRawAnlysis extends StatefulWidget {
-  const AddRawAnlysis({Key? key, required this.itemName, required this.itemId}) : super(key: key);
-final String itemName;
+class ComAnlysisInfoView extends StatefulWidget {
+  const ComAnlysisInfoView({Key? key, required this.itemName, required this.itemId}) : super(key: key);
+  final String itemName;
   final int itemId;
   @override
-  State<AddRawAnlysis> createState() => _AddRawAnlysisState();
+  State<ComAnlysisInfoView> createState() => _ComAnlysisInfoViewState();
 }
 
-class _AddRawAnlysisState extends State<AddRawAnlysis> {
+class _ComAnlysisInfoViewState extends State<ComAnlysisInfoView> {
 
-  final AnalysisRawService db = AnalysisRawService();
+  final ComAnlysisBodyService db = ComAnlysisBodyService();
   final ElementService element = ElementService();
 
 
@@ -40,7 +43,7 @@ class _AddRawAnlysisState extends State<AddRawAnlysis> {
 
   final qtyController = TextEditingController();
 
-  List<AnalysisRawModel> items = [];
+  List<ComAnlysisBodyModel> items = [];
 
 
   final _formKey = GlobalKey<FormState>();
@@ -74,7 +77,7 @@ class _AddRawAnlysisState extends State<AddRawAnlysis> {
   int selectedId = 0;
 
 
-  Future<List<AnalysisRawModel>> _loadItems() async {
+  Future<List<ComAnlysisBodyModel>> _loadItems() async {
 
     return await db.getAllDataById(widget.itemId);
   }
@@ -106,9 +109,16 @@ class _AddRawAnlysisState extends State<AddRawAnlysis> {
     });
   }
 
-  void _addRow(int id,double qty, int itemid, String elmentname) {
+  void _addRow(int id,double qty, int itemid, String elmentname,int headid) {
     setState(() {
-      items.add(new AnalysisRawModel(raw_id: itemid, raw_ana_qty: qty,raw_ana_id: id));
+      items.add(ComAnlysisBodyModel(
+          ana_body_qty: qty,
+        com_ana_id: headid,
+        com_ana_body_id: id,
+        element_id: itemid,
+        element_name: elmentname
+          
+      ));
     });
   }
 
@@ -118,7 +128,7 @@ class _AddRawAnlysisState extends State<AddRawAnlysis> {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-         _showAddDialog();
+          _showAddDialog();
         },
 
 
@@ -140,7 +150,7 @@ class _AddRawAnlysisState extends State<AddRawAnlysis> {
         ),
 
         elevation: 0.0,
-        title: const Center(child: Text("تحليل خامة")),
+        title: const Center(child: Text("تحليل التركيبة")),
       ),
       body: SingleChildScrollView(
           child: Form(
@@ -204,9 +214,9 @@ class _AddRawAnlysisState extends State<AddRawAnlysis> {
                               } else if (snapshot.hasError) {
                                 return Center(child: Text('Error: ${snapshot.error}'));
                               } else {
-                                 items = snapshot.data ?? [] ;
+                                items = snapshot.data ?? [] ;
 
-                                 return DataTable(
+                                return DataTable(
                                   columns: const [
 
 
@@ -218,7 +228,7 @@ class _AddRawAnlysisState extends State<AddRawAnlysis> {
                                   ],
                                   rows: items.asMap().entries.map((entry) {
                                     int index = entry.key;
-                                    AnalysisRawModel model = entry.value;
+                                    ComAnlysisBodyModel model = entry.value;
 
 
                                     return DataRow(
@@ -227,13 +237,13 @@ class _AddRawAnlysisState extends State<AddRawAnlysis> {
 
                                           child: Icon(Icons.delete,color: ColorManager.error,),
                                           onTap: () async{
-                                            await db.deleteItem(model.raw_ana_id ?? 0);
+                                            await db.deleteItem(model.com_ana_body_id ?? 0);
                                             _deleteRow(index);
                                           },
 
                                         )
                                         ),
-                                        DataCell(Text(model.raw_ana_qty.toString())),
+                                        DataCell(Text(model.ana_body_qty.toString())),
                                         DataCell(Text(model.element_name.toString())),
 
 
@@ -326,7 +336,7 @@ class _AddRawAnlysisState extends State<AddRawAnlysis> {
             TextButton(
               onPressed:  (){
                 _saveitem();
-                 Navigator.of(context).pop(false);
+                Navigator.of(context).pop(false);
               },
               child: Text('حفظ'),
             ),
@@ -348,7 +358,7 @@ class _AddRawAnlysisState extends State<AddRawAnlysis> {
 
     var elmentname = await element.getItemNameById(elmentid);
 
-    var model = AnalysisRawModel(raw_id: widget.itemId, raw_ana_qty: qty,element_id: elmentid,element_name:elmentname );
+    var model = ComAnlysisBodyModel(ana_body_qty: qty, com_ana_id: widget.itemId,element_id: elmentid,element_name: elmentname);
 
     int insertedRowId =await db.insertData(model);
 
@@ -358,7 +368,7 @@ class _AddRawAnlysisState extends State<AddRawAnlysis> {
       print(db.getAllData());
 
 
-      _addRow(insertedRowId,qty,widget.itemId,elmentname.toString());
+      _addRow(insertedRowId,qty,widget.itemId,elmentname.toString(),widget.itemId);
 
 
 
