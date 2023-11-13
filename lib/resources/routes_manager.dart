@@ -1,4 +1,6 @@
 import 'package:feedinsta/resources/strings_manager.dart';
+import 'package:feedinsta/view/com/addComView.dart';
+import 'package:feedinsta/view/com/comListView.dart';
 import 'package:feedinsta/view/comAnlysis/AddComAnlysis.dart';
 import 'package:feedinsta/view/comAnlysis/ComanlysisList.dart';
 import 'package:feedinsta/view/element/addElement.dart';
@@ -27,6 +29,10 @@ class Routes {
   static const String addComAnlysis = "/addComAnlysis";
 
   static const String comAnlysisList = "/ComAnlysisList";
+
+  static const String comAdd = "/comAdd";
+
+  static const String comList = "/comList";
 }
 
 class RouteGenerator {
@@ -54,6 +60,14 @@ class RouteGenerator {
 
       case Routes.comAnlysisList:
         return MaterialPageRoute(builder: (_) => const ComAnlysisListView());
+
+      case Routes.comAdd:
+        return MaterialPageRoute(builder: (_) => const AddComView());
+
+      case Routes.comList:
+        return MaterialPageRoute(builder: (_) => const ComListView());
+
+
      // case Routes.onBoarding:
        // return MaterialPageRoute(builder: (_) => const OnBoardingView());
       default:

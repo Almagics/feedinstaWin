@@ -97,6 +97,29 @@ class Dbcon{
         ''');
 
 
+
+
+
+        // Create composition_tbl
+        await db.execute('''
+      
+      
+      CREATE TABLE "composition_tbl" (
+	"com_id"	INTEGER NOT NULL UNIQUE,
+	"com_name"	TEXT,
+	"com_remarks"	TEXT,
+	"com_ana_id"	INTEGER,
+	"total_amount"	REAL,
+	"com_qty"	REAL,
+	PRIMARY KEY("com_id" AUTOINCREMENT),
+	FOREIGN KEY (com_ana_id) REFERENCES com_analysis_tbl(com_ana_id)
+);
+     
+        ''');
+
+
+
+
       },
     );
   }

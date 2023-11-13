@@ -32,10 +32,10 @@ class ComAnlysisBodyService{
   }
 
 
-  Future<List<ComAnlysisBodyModel>> getAllDataById(int raw_id) async {
+  Future<List<ComAnlysisBodyModel>> getAllDataById(int itemid) async {
     final db = await database.initDatabase();
 
-    List<Map<String, dynamic>> dbList = await db.query(tbl, where: 'raw_id = ?', whereArgs: [raw_id]);
+    List<Map<String, dynamic>> dbList = await db.query(tbl, where: 'com_ana_body_id = ?', whereArgs: [itemid]);
     List<ComAnlysisBodyModel> list = dbList.map((map) => ComAnlysisBodyModel.fromMap(map)).toList();
     return  list;
   }

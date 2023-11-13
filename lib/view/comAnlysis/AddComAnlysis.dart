@@ -60,7 +60,7 @@ class _AddComAnalysisViewState extends State<AddComAnalysisView> {
           ),
 
           elevation: 0.0,
-          title: const Center(child: Text("اضافة  تحليل تدكيبة")),
+          title: const Center(child: Text("اضافة  تحليل تركيبة")),
         ),
         body: SingleChildScrollView(
             child: Form(

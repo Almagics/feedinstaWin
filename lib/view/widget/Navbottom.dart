@@ -5,6 +5,7 @@
 
 
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
+import 'package:feedinsta/view/com/comListView.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -27,6 +28,7 @@ class _BottomNavBarDemoState extends State<BottomNavBarDemo> {
   final List<Widget> _screens = [
     MainView(),
     const AddItemView(),
+    const ComListView(),
 
 
 
@@ -38,9 +40,9 @@ class _BottomNavBarDemoState extends State<BottomNavBarDemo> {
       case 0:
         return new MainView();
       case 1:
-        return new AddItemView();
+        return new MainView();
       case 2:
-        return new AddItemView();
+        return new MainView();
 
 
 
@@ -55,7 +57,7 @@ class _BottomNavBarDemoState extends State<BottomNavBarDemo> {
       _selectedIndex = index;
     });
   }
-  List<String> titleList = ["الصفحة الرئيسية", "ادارة الخامات", "تواصل معنا","المنتجات","الملف الشخصي"];
+  List<String> titleList = ["الصفحة الرئيسية", "ادارة التركيبات", "تواصل معنا"];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -63,7 +65,7 @@ class _BottomNavBarDemoState extends State<BottomNavBarDemo> {
         backgroundColor: Colors.white,
 
         systemOverlayStyle: SystemUiOverlayStyle(
-            statusBarColor: ColorManager.darkGrey,
+            statusBarColor: ColorManager.primary,
             statusBarBrightness: Brightness.light
         ),
 
@@ -81,8 +83,8 @@ class _BottomNavBarDemoState extends State<BottomNavBarDemo> {
 
 
         ],
-        color: Colors.grey,
-        buttonBackgroundColor: Colors.grey,
+        color: ColorManager.primary,
+        buttonBackgroundColor: ColorManager.primary,
         backgroundColor: ColorManager.white,
         animationCurve: Curves.easeInOut,
         animationDuration: const Duration(milliseconds: 600),

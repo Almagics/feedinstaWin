@@ -1,8 +1,9 @@
-import 'package:feedinsta/model/comAnlysisModel.dart';
+import 'package:feedinsta/model/comModel.dart';
 import 'package:feedinsta/model/elementModel.dart';
 import 'package:feedinsta/model/itemmodel.dart';
-import 'package:feedinsta/service/ComAnlysisService.dart';
+import 'package:feedinsta/service/ComService.dart';
 import 'package:feedinsta/service/elementService.dart';
+import 'package:feedinsta/view/element/addElement.dart';
 import 'package:feedinsta/view/raw_item/addItem.dart';
 import 'package:feedinsta/view/widget/alertMsg.dart';
 import 'package:flutter/material.dart';
@@ -12,21 +13,21 @@ import '../../model/context/dbcontext.dart';
 import '../../resources/color_manager.dart';
 import '../../resources/routes_manager.dart';
 import '../../service/itemService.dart';
+import '../raw_analysis/addRawAnalysis.dart';
 import '../widget/cardItem.dart';
 import '../widget/dismissOption.dart';
-import 'comAnlysisInfoView.dart';
 
 
 
-class ComAnlysisListView extends StatefulWidget {
-  const ComAnlysisListView({super.key});
+class ComListView extends StatefulWidget {
+  const ComListView({super.key});
 
   @override
-  State<ComAnlysisListView> createState() => _ComAnlysisListViewState();
+  State<ComListView> createState() => _ComListViewState();
 }
 
-class _ComAnlysisListViewState extends State<ComAnlysisListView> {
-  final ComAnlysisService db = ComAnlysisService();
+class _ComListViewState extends State<ComListView> {
+  final ComService db = ComService();
 
 
   final List<ItemModel> items = [
@@ -43,7 +44,7 @@ class _ComAnlysisListViewState extends State<ComAnlysisListView> {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.pushReplacementNamed(context, Routes.addComAnlysis);
+          Navigator.pushReplacementNamed(context, Routes.mainRoute);
         },
 
 
@@ -64,11 +65,11 @@ class _ComAnlysisListViewState extends State<ComAnlysisListView> {
         ),
 
         elevation: 0.0,
-        title: const Center(child: Text("قائمة  تحاليل التركيبات")),
+        title: const Center(child: Text("قائمة  التركيبات")),
       ),
 
-      body: FutureBuilder<List<ComAnlysisModel>>(
-        future: db.getAllData(),
+      body: FutureBuilder<List<ComModel>>(
+        future:  db.getAllData(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(child: CircularProgressIndicator());
@@ -81,20 +82,21 @@ class _ComAnlysisListViewState extends State<ComAnlysisListView> {
             return ListView.builder(
               itemCount: data?.length,
               itemBuilder: (context, index) {
-                return DisMissOption(nkey: data![index].com_ana_id.toString(),
-                  name: data![index].com_ana_name,
-                  widget:  CardWithImageAndText( onPressed: () {
-                    Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                            builder: (ctx) => ComAnlysisInfoView(itemName: data![index].com_ana_name??'', itemId: data![index].com_ana_id??0,)));
+                return DisMissOption(nkey: data![index].com_id.toString(),
+                  name: data![index].com_name,
+                  widget:  CardWithImageAndText(
+                    onPressed: () {
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (ctx) => AddRawAnlysis(itemName: data![index].com_name ??"", itemId: data![index].com_id??0,)));
 
-                  }, name: data![index].com_ana_name ?? '', id: data![index].com_ana_id ?? 0,
+                    }, name: data![index].com_name ?? '', id: data![index].com_id ?? 0,
 
 
                   ),
                   onPressed: () {
-                    db.deleteItem(data![index].com_ana_id ?? 0);
+                    db.deleteItem(data![index].com_id ?? 0);
                     Navigator.of(context).pop(true);
 
 
