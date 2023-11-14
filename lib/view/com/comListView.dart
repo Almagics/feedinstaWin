@@ -44,7 +44,7 @@ class _ComListViewState extends State<ComListView> {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.pushReplacementNamed(context, Routes.mainRoute);
+          Navigator.pushReplacementNamed(context, Routes.comAdd);
         },
 
 
