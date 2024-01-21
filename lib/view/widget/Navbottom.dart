@@ -6,6 +6,8 @@
 
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:feedinsta/view/com/comListView.dart';
+import 'package:feedinsta/view/groupCom/groupCom_view.dart';
+import 'package:feedinsta/view/groupRaw/groupRaw_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -28,7 +30,7 @@ class _BottomNavBarDemoState extends State<BottomNavBarDemo> {
   final List<Widget> _screens = [
     MainView(),
     const AddItemView(),
-    const ComListView(),
+    const GroupComListView(),
 
 
 
@@ -40,9 +42,9 @@ class _BottomNavBarDemoState extends State<BottomNavBarDemo> {
       case 0:
         return new MainView();
       case 1:
-        return new MainView();
+        return new GroupComListView();
       case 2:
-        return new MainView();
+        return new GroupListView();
 
 
 
@@ -61,17 +63,7 @@ class _BottomNavBarDemoState extends State<BottomNavBarDemo> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar:  AppBar(
-        backgroundColor: Colors.white,
 
-        systemOverlayStyle: SystemUiOverlayStyle(
-            statusBarColor: ColorManager.primary,
-            statusBarBrightness: Brightness.light
-        ),
-
-        elevation: 0.0,
-        title: Center(child: Text(titleList[_currentIndex],style: Theme.of(context).textTheme.titleLarge,)),
-      ),
       bottomNavigationBar: CurvedNavigationBar(
         //key: _bottomNavigationKey,
         index: 0,

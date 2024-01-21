@@ -13,6 +13,7 @@ class ComModel{
   final int? com_ana_id;
   final double? total_amount;
   final double? com_qty;
+  final int? group_com_id;
 
 
 
@@ -22,7 +23,8 @@ class ComModel{
     required this.com_ana_id,
     required this.com_qty,
     required this.total_amount,
-    this.com_remarks
+    this.com_remarks,
+    required this.group_com_id
   });
 
 
@@ -34,7 +36,9 @@ class ComModel{
       'com_qty': com_qty,
       'total_amount': total_amount,
       'com_remarks':com_remarks,
-      'com_ana_id':com_ana_id
+      'com_ana_id':com_ana_id,
+      'group_com_id':group_com_id
+
 
     };
   }
@@ -47,7 +51,8 @@ class ComModel{
       com_qty: map['com_qty'],
       total_amount: map['total_amount'],
         com_remarks:map['com_remarks'],
-        com_ana_id: map['com_ana_id']
+        com_ana_id: map['com_ana_id'],
+        group_com_id:map['group_com_id']
 
     );
   }

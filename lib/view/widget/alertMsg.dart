@@ -19,26 +19,40 @@ class _AlertDailogMsgState extends State<AlertDailogMsg> {
   Widget build(BuildContext context) {
     return AlertDialog(
       title: Text(widget.title),
-      content: Column(
-        children: [
-           AppTextFormFiled(
-            keyboardType:  TextInputType.number,
-            iconData: Icons.numbers,
-            //controller: qtyController,
-            hintText: 'Enter your Phone number',
+      content: Directionality(
+        textDirection: TextDirection.rtl,
+        child: Column(
+          children: [
 
-          ),
-          Text(widget.supject),
-        ],
+            Center(child: Align(
+              alignment: Alignment.centerRight,
+              child: Text(widget.supject,
+                style: const TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: Colors.red,
+              ),
+              ),
+            )),
+          ],
+        ),
       ),
       actions: <Widget>[
         TextButton(
           onPressed: () => Navigator.of(context).pop(false),
-          child: Text('الغاء'),
+          child: const Text('الغاء',style: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            color: Colors.green,
+          ),),
         ),
         TextButton(
           onPressed:  widget.onPressed,
-          child: Text('تاكيد'),
+          child: Text('تاكيد',style: const TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            color: Colors.red,
+          ),),
         ),
       ],
     );

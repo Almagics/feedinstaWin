@@ -4,6 +4,7 @@ import 'dart:ffi';
 import 'package:feedinsta/model/comAnlysisModel.dart';
 
 import 'package:feedinsta/service/ComAnlysisService.dart';
+import 'package:feedinsta/service/groupComAnalysis.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -12,6 +13,7 @@ import 'package:flutter/services.dart';
 import '../../resources/color_manager.dart';
 import '../../resources/routes_manager.dart';
 import '../../resources/values_manager.dart';
+import '../com/comListView.dart';
 import '../widget/app_text_form_filed.dart';
 import 'ComanlysisList.dart';
 
@@ -20,7 +22,8 @@ import 'ComanlysisList.dart';
 
 
 class AddComAnalysisView extends StatefulWidget {
-  const AddComAnalysisView({Key? key}) : super(key: key);
+  const AddComAnalysisView({Key? key, required this.groupId}) : super(key: key);
+  final int groupId;
 
   @override
   State<AddComAnalysisView> createState() => _AddComAnalysisViewState();
@@ -29,16 +32,63 @@ class AddComAnalysisView extends StatefulWidget {
 class _AddComAnalysisViewState extends State<AddComAnalysisView> {
 
   final ComAnlysisService db = ComAnlysisService();
-
+  final GroupComAnalysisService group = GroupComAnalysisService();
 
   final comAnalysisNameController = TextEditingController();
 
   final remarksController = TextEditingController();
 
 
+  final groupController = TextEditingController();
+
 
 
   final _formKey = GlobalKey<FormState>();
+
+
+  _getDropDownDecoration({required hintText, required IconData icon}) {
+    return InputDecoration(
+        contentPadding:
+        const EdgeInsets.symmetric(horizontal: 12.0, vertical: 16.0),
+        hintText: hintText,
+        prefixIcon: Icon(icon),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(100.0)));
+  }
+
+  List<Map<String, dynamic>> dropdownData = [];
+  int selectedId = 0;
+
+
+  @override
+  void dispose() {
+    comAnalysisNameController.dispose();
+    remarksController.dispose();
+    groupController.dispose();
+
+
+    super.dispose();
+  }
+
+
+
+  @override
+  void initState() {
+    super.initState();
+    _loadDropdownData();
+  }
+
+  Future<void> _loadDropdownData() async {
+
+    var data = await group.getDropdownData();
+    setState(() {
+      dropdownData = data;
+      if (data.isNotEmpty) {
+        selectedId = data[0]['group_com_analysis_id'] as int;
+      }
+    });
+  }
+
+
 
 
   @override
@@ -51,7 +101,10 @@ class _AddComAnalysisViewState extends State<AddComAnalysisView> {
           leading: IconButton(
             icon: Icon(Icons.arrow_back,color: ColorManager.white,),
             onPressed: () {
-              Navigator.pushReplacementNamed(context, Routes.itemList);// Navigate back to the previous screen
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                      builder: (ctx) => ComAnlysisListView( id: widget.groupId)));
             },
           ),
           systemOverlayStyle: SystemUiOverlayStyle(
@@ -60,7 +113,12 @@ class _AddComAnalysisViewState extends State<AddComAnalysisView> {
           ),
 
           elevation: 0.0,
-          title: const Center(child: Text("اضافة  تحليل تركيبة")),
+          title: const Center(child: Text("اضافة  تحليل سلالة",
+            style: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+          ),)),
         ),
         body: SingleChildScrollView(
             child: Form(
@@ -72,7 +130,7 @@ class _AddComAnalysisViewState extends State<AddComAnalysisView> {
                   Container(
                     margin: EdgeInsets.all(AppPadding.p8),
                     child: const Padding(padding: EdgeInsets.all(AppPadding.p8),
-                      child: Center(child: Text("اضافة  تحليل تدكيبة")),
+                      child: Center(child: Text("اضافة  تحليل سلالة")),
 
 
                     ),
@@ -94,9 +152,59 @@ class _AddComAnalysisViewState extends State<AddComAnalysisView> {
                       child: AppTextFormFiled(
 
                         controller: comAnalysisNameController,
-                        hintText: "ادخل اسم التحليل",
+                        hintText: "ادخل اسم السلالة",
                       )
                   ),
+
+
+
+
+
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      "المجموعة",
+                      style: Theme
+                          .of(context)
+                          .textTheme
+                          .headlineMedium,
+                    ),
+                  ),
+
+                  Padding(padding: EdgeInsets.all(AppPadding.p8),
+                    child:
+
+                    DropdownButtonFormField(
+                        validator: (value) {
+                          if (value == null) {
+                            return 'Required*';
+                          }
+                        },
+                        icon: const Icon(Icons.keyboard_arrow_down),
+                        decoration: _getDropDownDecoration(
+                            hintText: 'اختر المجموعة', icon: Icons.add_chart_outlined),
+                        items: dropdownData.map<DropdownMenuItem<int>>(
+                              (Map<String, dynamic> item) {
+                            return DropdownMenuItem<int>(
+                              value: item['group_com_analysis_id'] as int,
+                              child: Text(item['group_com_analysis_name'] as String),
+                            );
+                          },
+                        ).toList(),
+                        onChanged: (value) {
+                          setState(() {
+                            groupController.text = value.toString()!;
+                          });
+                        }),
+                  ),
+
+
+
+
+
+
+
+
 
 
                   Padding(
@@ -154,7 +262,16 @@ class _AddComAnalysisViewState extends State<AddComAnalysisView> {
     String name = comAnalysisNameController.text;
     String remarks = remarksController.text;
 
-    var model = new ComAnlysisModel(com_ana_name: name,com_ana_remarks: remarks);
+    int group =int.parse(groupController.text) ;
+
+    var model =  ComAnlysisModel(
+        com_ana_name: name
+        ,com_ana_remarks: remarks,
+      group_com_analysis_id: group,
+
+
+
+    );
 
     int insertedRowId =await db.insertData(model);
 
@@ -166,7 +283,7 @@ class _AddComAnalysisViewState extends State<AddComAnalysisView> {
       Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-              builder: (ctx) => ComAnlysisListView()));
+              builder: (ctx) => ComAnlysisListView(id: group,)));
 
     } else {
       print('Error inserting data.');

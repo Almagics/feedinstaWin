@@ -1,32 +1,28 @@
 
 
-
-
-
-
-import 'package:feedinsta/model/comModel.dart';
 import 'package:sqflite/sqflite.dart';
 
 import '../model/context/dbcontext.dart';
+import '../model/groupRawModel.dart';
 import '../model/itemmodel.dart';
 
-class ComService{
+class GroupRawService{
   final Dbcon database = Dbcon();
-  final String tbl = "composition_tbl";
+  final String tbl = "group_raw";
 
 //insert
-  Future<int> insertData(ComModel data) async {
+  Future<int> insertData(GroupRawModel data) async {
     final db = await database.initDatabase();
     return await db.insert(tbl, data.toJson(),
         conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
   // Example: Query all records
-  Future<List<ComModel>> getAllData() async {
+  Future<List<GroupRawModel>> getAllData() async {
     final db = await database.initDatabase();
 
     List<Map<String, dynamic>> dbList = await db.query(tbl);
-    List<ComModel> list = dbList.map((map) => ComModel.fromMap(map)).toList();
+    List<GroupRawModel> list = dbList.map((map) => GroupRawModel.fromMap(map)).toList();
     return  list;
   }
 
@@ -36,7 +32,7 @@ class ComService{
     final db = await database.initDatabase();
     return await db.delete(
       tbl,
-      where: 'com_id = ?',
+      where: 'group_raw_id = ?',
       whereArgs: [id],
     );
   }
@@ -47,10 +43,10 @@ class ComService{
 
   Future<String?> getItemNameById(int id) async {
     final db = await database.initDatabase();
-    var result = await db.query(tbl, columns: ['item_name'], where: 'item_id = ?', whereArgs: [id]);
+    var result = await db.query(tbl, columns: ['group_raw_name'], where: 'group_raw_id = ?', whereArgs: [id]);
 
     if (result.isNotEmpty) {
-      return result.first['item_name'] as String?;
+      return result.first['group_raw_name'] as String?;
     } else {
       return null;
     }
@@ -59,16 +55,13 @@ class ComService{
 
 
 
-  Future<List<ComModel>> getAllDataByGroup(int id) async {
+
+
+
+  Future<List<Map<String, dynamic>>> getDropdownData() async {
     final db = await database.initDatabase();
-
-    List<Map<String, dynamic>> dbList = await db.query(tbl,columns: ['com_id', 'com_name'],where: 'group_com_id = ?', whereArgs: [id]);
-    List<ComModel> list = dbList.map((map) => ComModel.fromMap(map)).toList();
-    return  list;
+    return await db.query(tbl, columns: ['group_raw_id', 'group_raw_name']);
   }
-
-
-
 
 
 

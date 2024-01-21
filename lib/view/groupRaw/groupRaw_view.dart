@@ -1,33 +1,32 @@
 import 'package:feedinsta/model/elementModel.dart';
+import 'package:feedinsta/model/groupRawModel.dart';
 import 'package:feedinsta/model/itemmodel.dart';
 import 'package:feedinsta/service/elementService.dart';
-import 'package:feedinsta/view/element/addElement.dart';
+import 'package:feedinsta/service/groupRawService.dart';
 import 'package:feedinsta/view/raw_item/addItem.dart';
-import 'package:feedinsta/view/widget/alertMsg.dart';
+import 'package:feedinsta/view/raw_item/itemList.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import '../../model/context/dbcontext.dart';
+
 import '../../resources/color_manager.dart';
 import '../../resources/routes_manager.dart';
-import '../../service/itemService.dart';
-import '../raw_analysis/addRawAnalysis.dart';
+
 import '../widget/cardItem.dart';
 import '../widget/dismissOption.dart';
 
 
 
-class ItemListView extends StatefulWidget {
-  const ItemListView({super.key, required this.id});
-
-  final int id;
+class GroupListView extends StatefulWidget {
+  const GroupListView({super.key});
 
   @override
-  State<ItemListView> createState() => _OrderListViewState();
+  State<GroupListView> createState() => _GroupListViewState();
 }
 
-class _OrderListViewState extends State<ItemListView> {
-  final ItemService db = ItemService();
+class _GroupListViewState extends State<GroupListView> {
+  final GroupRawService db = GroupRawService();
 
 
   final List<ItemModel> items = [
@@ -44,7 +43,7 @@ class _OrderListViewState extends State<ItemListView> {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.pushReplacementNamed(context, Routes.addItem);
+          Navigator.pushReplacementNamed(context, Routes.addGroupRaw);
         },
 
 
@@ -56,7 +55,7 @@ class _OrderListViewState extends State<ItemListView> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back,color: ColorManager.white,),
           onPressed: () {
-            Navigator.pushReplacementNamed(context, Routes.groupRawList);// Navigate back to the previous screen
+            Navigator.pushReplacementNamed(context, Routes.mainRoute);// Navigate back to the previous screen
           },
         ),
         systemOverlayStyle: SystemUiOverlayStyle(
@@ -65,15 +64,15 @@ class _OrderListViewState extends State<ItemListView> {
         ),
 
         elevation: 0.0,
-        title: const Center(child: Text("قائمة  الخامات", style: TextStyle(
+        title: const Center(child: Text("قائمة مجموعات الخامات ", style: TextStyle(
           fontSize: 20,
           fontWeight: FontWeight.bold,
           color: Colors.white,
         ),)),
       ),
 
-      body: FutureBuilder<List<ItemModel>>(
-        future:  db.getAllDataByGroup(widget.id),
+      body: FutureBuilder<List<GroupRawModel>>(
+        future: db.getAllData(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(child: CircularProgressIndicator());
@@ -82,33 +81,24 @@ class _OrderListViewState extends State<ItemListView> {
           } else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
             final data = snapshot.data;
 
-            print("dataaa is : $data" );
-
             // Display data in a ListView or other widget
             return ListView.builder(
               itemCount: data?.length,
               itemBuilder: (context, index) {
-                return DisMissOption(nkey: data![index].item_id.toString(),
-                  name: data![index].item_name,
-
-                  widget:  CardWithImageAndText(
-                     onPressed: () {
+                return DisMissOption(nkey: data![index].group_raw_id.toString(),
+                  name: data![index].group_raw_name,
+                  widget:  CardWithImageAndText( onPressed: () {
                     Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
-                            builder: (ctx) => AddRawAnlysis(itemName: data![index].item_name ??"", itemId: data![index].item_id??0,)));
+                            builder: (ctx) => ItemListView( id: data![index].group_raw_id ?? 0)));
 
-                  },
-                    name: data![index].item_name.toString() ?? '',
-                    id: data![index].item_id ?? 0,
-                    iconlist:   Icon(Icons.inventory_2_outlined,size: 50,color: Colors.white,),
-                    desc: "معدل الاضافة : ${data![index].ratio??""}",
-                    price: "السعر : ${data![index].price??0}",
+                  }, name: data![index].group_raw_name ?? '', id: data![index].group_raw_id ?? 0, iconlist:   Icon(Icons.grid_view_sharp,size: 50,color: Colors.white,),
 
 
                   ),
                   onPressed: () {
-                    db.deleteItem(data![index].item_id ?? 0);
+                    db.deleteItem(data![index].group_raw_id ?? 0);
                     Navigator.of(context).pop(true);
 
 

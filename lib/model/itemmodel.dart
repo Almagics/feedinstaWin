@@ -11,10 +11,20 @@ class ItemModel{
   final String? item_name;
   final String? remarks;
   final double? price;
+  final String? ratio;
+  final int? group_raw_id;
 
 
 
-  ItemModel( { this.item_id, required this.item_name, required this.remarks,required this.price});
+  ItemModel( {
+    this.item_id,
+    required this.item_name,
+    required this.remarks,
+    required this.price,
+    required this.ratio,
+    required this.group_raw_id
+
+  });
 
 
 
@@ -23,7 +33,9 @@ class ItemModel{
       'item_id':item_id,
       'item_name': item_name,
       'remarks': remarks,
-      'price': price
+      'price': price,
+      'ratio':ratio,
+      'group_raw_id':group_raw_id
     };
   }
 
@@ -34,6 +46,8 @@ class ItemModel{
       item_name: map['item_name'],
       remarks: map['remarks'],
       price: map['price'],
+      ratio: map['ratio'],
+      group_raw_id: map['group_raw_id']
 
     );
   }

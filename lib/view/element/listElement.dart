@@ -61,7 +61,11 @@ class _ElementListViewState extends State<ElementListView> {
         ),
 
         elevation: 0.0,
-        title: const Center(child: Text("قائمة عناصر التحليل")),
+        title: const Center(child: Text("قائمة عناصر التحليل", style: TextStyle(
+          fontSize: 20,
+          fontWeight: FontWeight.bold,
+          color: Colors.white,
+        ),)),
       ),
 
       body: FutureBuilder<List<ElementModel>>(
@@ -81,12 +85,10 @@ class _ElementListViewState extends State<ElementListView> {
                 return DisMissOption(nkey: data![index].element_id.toString(),
                   name: data![index].element_name,
                   widget:  CardWithImageAndText( onPressed: () {
-                    Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                            builder: (ctx) => AddItemView()));
 
-                  }, name: data![index].element_name ?? '', id: data![index].element_id ?? 0,
+
+
+                  }, name: data![index].element_name ?? '', id: data![index].element_id ?? 0, iconlist:   Icon(Icons.bubble_chart,size: 50,color: Colors.white,),
 
 
                   ),

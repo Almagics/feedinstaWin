@@ -26,6 +26,8 @@ final String tbl = "raw_item_tbl";
 
     List<Map<String, dynamic>> dbList = await db.query(tbl);
     List<ItemModel> list = dbList.map((map) => ItemModel.fromMap(map)).toList();
+
+
     return  list;
   }
 
@@ -57,13 +59,34 @@ final String tbl = "raw_item_tbl";
 
 
 
+  Future<double?> getItemPriceById(int id) async {
+    final db = await database.initDatabase();
+    var result = await db.query(tbl, columns: ['price'], where: 'item_id = ?', whereArgs: [id]);
+
+    if (result.isNotEmpty) {
+      return result.first['price'] as double?;
+    } else {
+      return null;
+    }
+  }
 
 
 
 
+  Future<List<Map<String, dynamic>>> getDropdownData() async {
+    final db = await database.initDatabase();
+    return await db.query(tbl, columns: ['item_id', 'item_name']);
+  }
 
 
 
+  Future<List<ItemModel>> getAllDataByGroup(int id) async {
+    final db = await database.initDatabase();
+
+    List<Map<String, dynamic>> dbList = await db.query(tbl,columns: ['item_id', 'item_name','price','ratio','group_raw_id','remarks'],where: 'group_raw_id = ?', whereArgs: [id]);
+    List<ItemModel> list = dbList.map((map) => ItemModel.fromMap(map)).toList();
+    return  list;
+  }
 
 
 }

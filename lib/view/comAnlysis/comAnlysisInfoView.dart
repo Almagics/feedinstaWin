@@ -21,14 +21,16 @@ import '../../resources/routes_manager.dart';
 import '../../resources/values_manager.dart';
 import '../raw_item/itemList.dart';
 import '../widget/app_text_form_filed.dart';
+import 'ComanlysisList.dart';
 
 
 
 
 class ComAnlysisInfoView extends StatefulWidget {
-  const ComAnlysisInfoView({Key? key, required this.itemName, required this.itemId}) : super(key: key);
+  const ComAnlysisInfoView({Key? key, required this.itemName, required this.itemId, required this.groupId}) : super(key: key);
   final String itemName;
   final int itemId;
+  final int groupId;
   @override
   State<ComAnlysisInfoView> createState() => _ComAnlysisInfoViewState();
 }
@@ -141,7 +143,10 @@ class _ComAnlysisInfoViewState extends State<ComAnlysisInfoView> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back,color: ColorManager.white,),
           onPressed: () {
-            Navigator.pushReplacementNamed(context, Routes.itemList);// Navigate back to the previous screen
+            Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                    builder: (ctx) => ComAnlysisListView( id: widget.groupId)));
           },
         ),
         systemOverlayStyle: SystemUiOverlayStyle(
@@ -150,7 +155,11 @@ class _ComAnlysisInfoViewState extends State<ComAnlysisInfoView> {
         ),
 
         elevation: 0.0,
-        title: const Center(child: Text("تحليل التركيبة")),
+        title: const Center(child: Text("تحليل السلالة", style: TextStyle(
+          fontSize: 20,
+          fontWeight: FontWeight.bold,
+          color: Colors.white,
+        ),)),
       ),
       body: SingleChildScrollView(
           child: Form(

@@ -5,12 +5,18 @@ import 'package:feedinsta/view/comAnlysis/AddComAnlysis.dart';
 import 'package:feedinsta/view/comAnlysis/ComanlysisList.dart';
 import 'package:feedinsta/view/element/addElement.dart';
 import 'package:feedinsta/view/element/listElement.dart';
+import 'package:feedinsta/view/groupCom/groupCom_view.dart';
+import 'package:feedinsta/view/groupComAnalysis/groupComAnalysisAdd_view.dart';
+import 'package:feedinsta/view/groupComAnalysis/groupComAnlysis_view.dart';
+import 'package:feedinsta/view/groupRaw/groupRawAdd_view.dart';
+import 'package:feedinsta/view/groupRaw/groupRaw_view.dart';
 import 'package:feedinsta/view/raw_item/addItem.dart';
 import 'package:feedinsta/view/raw_item/itemList.dart';
 import 'package:feedinsta/view/widget/Navbottom.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../view/groupCom/groupComAdd_view.dart';
 import '../view/home/mainview.dart';
 
 class Routes {
@@ -33,6 +39,20 @@ class Routes {
   static const String comAdd = "/comAdd";
 
   static const String comList = "/comList";
+
+  static const String groupRawList = "/groupRawList";
+
+  static const String addGroupRaw = "/addGroupRaw";
+
+  static const String groupcomanalysisList = "/groupcomanalysisList";
+
+  static const String addGroupComAnalysis = "/addGroupComAnalysis";
+
+
+  static const String groupcomaList = "/groupcomList";
+
+  static const String addGroupCom = "/addGroupCom";
+
 }
 
 class RouteGenerator {
@@ -47,7 +67,7 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => const AddItemView());
 
       case Routes.itemList:
-        return MaterialPageRoute(builder: (_) => const ItemListView());
+        return MaterialPageRoute(builder: (_) => const ItemListView(id: 0,));
 
       case Routes.elementList:
         return MaterialPageRoute(builder: (_) => const ElementListView());
@@ -56,19 +76,46 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => const AddElementView());
 
       case Routes.addComAnlysis:
-        return MaterialPageRoute(builder: (_) => const AddComAnalysisView());
+        return MaterialPageRoute(builder: (_) => const AddComAnalysisView(groupId: 0,));
 
       case Routes.comAnlysisList:
-        return MaterialPageRoute(builder: (_) => const ComAnlysisListView());
+        return MaterialPageRoute(builder: (_) => const ComAnlysisListView(id: 0,));
 
       case Routes.comAdd:
-        return MaterialPageRoute(builder: (_) => const AddComView());
+        return MaterialPageRoute(builder: (_) => const AddComView(groupId: 0,));
 
       case Routes.comList:
-        return MaterialPageRoute(builder: (_) => const ComListView());
+        return MaterialPageRoute(builder: (_) => const ComListView(groupId: 0,));
 
 
-     // case Routes.onBoarding:
+      case Routes.groupRawList:
+        return MaterialPageRoute(builder: (_) => const GroupListView());
+
+
+      case Routes.addGroupRaw:
+        return MaterialPageRoute(builder: (_) => const GroupRawAdd());
+
+      case Routes.groupcomanalysisList:
+        return MaterialPageRoute(builder: (_) => const GroupComAnalysisListView());
+
+
+      case Routes.addGroupComAnalysis:
+        return MaterialPageRoute(builder: (_) => const GroupComAnalysisAdd());
+
+
+
+      case Routes.groupcomaList:
+        return MaterialPageRoute(builder: (_) => const GroupComListView());
+
+
+      case Routes.addGroupCom:
+        return MaterialPageRoute(builder: (_) => const GroupComAdd());
+
+
+
+
+
+    // case Routes.onBoarding:
        // return MaterialPageRoute(builder: (_) => const OnBoardingView());
       default:
         return unDefiendRoute();

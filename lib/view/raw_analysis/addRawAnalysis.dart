@@ -9,6 +9,7 @@ import 'package:feedinsta/model/itemmodel.dart';
 import 'package:feedinsta/service/analysisRawService.dart';
 import 'package:feedinsta/service/elementService.dart';
 import 'package:feedinsta/service/itemService.dart';
+import 'package:feedinsta/view/groupRaw/groupRaw_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -131,7 +132,7 @@ class _AddRawAnlysisState extends State<AddRawAnlysis> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back,color: ColorManager.white,),
           onPressed: () {
-            Navigator.pushReplacementNamed(context, Routes.itemList);// Navigate back to the previous screen
+            Navigator.pushReplacementNamed(context, Routes.groupRawList);// Navigate back to the previous screen
           },
         ),
         systemOverlayStyle: SystemUiOverlayStyle(
@@ -140,7 +141,11 @@ class _AddRawAnlysisState extends State<AddRawAnlysis> {
         ),
 
         elevation: 0.0,
-        title: const Center(child: Text("تحليل خامة")),
+        title: const Center(child: Text("تحليل خامة", style: TextStyle(
+          fontSize: 20,
+          fontWeight: FontWeight.bold,
+          color: Colors.white,
+        ),)),
       ),
       body: SingleChildScrollView(
           child: Form(

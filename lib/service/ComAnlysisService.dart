@@ -63,7 +63,7 @@ class ComAnlysisService{
 
   Future<String?> getItemNameById(int id) async {
     final db = await database.initDatabase();
-    var result = await db.query(tbl, columns: ['element_name'], where: 'element_id = ?', whereArgs: [id]);
+    var result = await db.query(tbl, columns: ['com_ana_name'], where: 'com_ana_id = ?', whereArgs: [id]);
 
     if (result.isNotEmpty) {
       return result.first['element_name'] as String?;
@@ -74,6 +74,14 @@ class ComAnlysisService{
 
 
 
+
+  Future<List<ComAnlysisModel>> getAllDataByGroup(int id) async {
+    final db = await database.initDatabase();
+
+    List<Map<String, dynamic>> dbList = await db.query(tbl,columns: ['com_ana_id', 'com_ana_name'],where: 'group_com_analysis_id = ?', whereArgs: [id]);
+    List<ComAnlysisModel> list = dbList.map((map) => ComAnlysisModel.fromMap(map)).toList();
+    return  list;
+  }
 
 
 

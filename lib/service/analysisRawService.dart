@@ -60,11 +60,35 @@ class AnalysisRawService{
 
 
 
+  Future<double> getSumOfQuantities(List<int> itemIds,int elementid) async {
+    final db = await database.initDatabase();
+    List<Map<String, dynamic>> result = await db.query(
+      tbl,
+      where: 'raw_id IN (${itemIds.map((id) => '?').join(',')}) AND element_id = ?',
+      whereArgs: [...itemIds, elementid],
+    );
+
+    double sum = 0;
+    for (Map<String, dynamic> row in result) {
+      sum += row['raw_ana_qty'] as double;
+    }
+print(' is : ${sum}');
+    return sum;
+  }
 
 
 
 
+  Future<double?> getItemqtyById(int itemid,int elemetnid) async {
+    final db = await database.initDatabase();
+    var result = await db.query(tbl, columns: ['raw_ana_qty'], where: 'raw_id = ? AND elememt_id = ?', whereArgs: [itemid,elemetnid]);
 
+    if (result.isNotEmpty) {
+      return result.first['raw_ana_qty'] as double?;
+    } else {
+      return null;
+    }
+  }
 
 
 

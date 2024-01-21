@@ -2,6 +2,7 @@
 import 'dart:ffi';
 
 import 'package:feedinsta/model/itemmodel.dart';
+import 'package:feedinsta/service/groupRawService.dart';
 import 'package:feedinsta/service/itemService.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -25,16 +26,64 @@ class AddItemView extends StatefulWidget {
 class _RegisterViewState extends State<AddItemView> {
 
   final ItemService db = ItemService();
-
+  final GroupRawService group = GroupRawService();
 
   final itemNameController = TextEditingController();
 
   final remarksController = TextEditingController();
 
   final priceController = TextEditingController();
+  final ratioController = TextEditingController();
+
+  final GroupController = TextEditingController();
 
 
   final _formKey = GlobalKey<FormState>();
+
+  _getDropDownDecoration({required hintText, required IconData icon}) {
+    return InputDecoration(
+        contentPadding:
+        const EdgeInsets.symmetric(horizontal: 12.0, vertical: 16.0),
+        hintText: hintText,
+        prefixIcon: Icon(icon),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(100.0)));
+  }
+
+  List<Map<String, dynamic>> dropdownData = [];
+  int selectedId = 0;
+
+
+  @override
+  void dispose() {
+    itemNameController.dispose();
+    remarksController.dispose();
+    priceController.dispose();
+        ratioController.dispose();
+        GroupController.dispose();
+
+        super.dispose();
+  }
+
+
+
+  @override
+  void initState() {
+    super.initState();
+    _loadDropdownData();
+  }
+
+  Future<void> _loadDropdownData() async {
+
+    var data = await group.getDropdownData();
+    setState(() {
+      dropdownData = data;
+      if (data.isNotEmpty) {
+        selectedId = data[0]['group_raw_id'] as int;
+      }
+    });
+  }
+
+
 
 
   @override
@@ -56,7 +105,11 @@ class _RegisterViewState extends State<AddItemView> {
           ),
 
           elevation: 0.0,
-          title: const Center(child: Text("ادخال صنف جديد")),
+          title: const Center(child: Text("ادخال صنف جديد", style: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+          ),)),
         ),
         body: SingleChildScrollView(
             child: Form(
@@ -94,6 +147,48 @@ class _RegisterViewState extends State<AddItemView> {
                       )
                   ),
 
+
+
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      "المجموعة",
+                      style: Theme
+                          .of(context)
+                          .textTheme
+                          .headlineMedium,
+                    ),
+                  ),
+
+                  Padding(padding: EdgeInsets.all(AppPadding.p8),
+                      child:
+
+                      DropdownButtonFormField(
+                          validator: (value) {
+                            if (value == null) {
+                              return 'Required*';
+                            }
+                          },
+                          icon: const Icon(Icons.keyboard_arrow_down),
+                          decoration: _getDropDownDecoration(
+                              hintText: 'اختر المجموعة', icon: Icons.add_chart_outlined),
+                          items: dropdownData.map<DropdownMenuItem<int>>(
+                                (Map<String, dynamic> item) {
+                              return DropdownMenuItem<int>(
+                                value: item['group_raw_id'] as int,
+                                child: Text(item['group_raw_name'] as String),
+                              );
+                            },
+                          ).toList(),
+                          onChanged: (value) {
+                            setState(() {
+                              GroupController.text = value.toString()!;
+                            });
+                          }),
+                  ),
+
+
+
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
@@ -114,6 +209,34 @@ class _RegisterViewState extends State<AddItemView> {
 
                       )
                   ),
+
+
+
+
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      "معدل الاضافة",
+                      style: Theme
+                          .of(context)
+                          .textTheme
+                          .headlineMedium,
+                    ),
+                  ),
+
+                  Padding(padding: EdgeInsets.all(AppPadding.p8),
+                      child: AppTextFormFiled(
+
+                        controller: ratioController,
+                        hintText: "ادخل معدل الاضافة",
+                      )
+                  ),
+
+
+
+
+
+
 
                   Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -170,7 +293,20 @@ class _RegisterViewState extends State<AddItemView> {
     String itemname = itemNameController.text;
     String remarks = remarksController.text;
     double price = double.parse(priceController.text);
-    var model = new ItemModel( item_name: itemname, remarks: remarks, price: price);
+    String ratio = ratioController.text;
+    int groupId = int.parse(GroupController.text);
+
+
+
+
+    var model = ItemModel(
+        item_name: itemname,
+        remarks: remarks,
+        price: price,
+      ratio: ratio,
+      group_raw_id: groupId
+
+    );
 
    int insertedRowId =await db.insertData(model);
 
@@ -178,11 +314,14 @@ class _RegisterViewState extends State<AddItemView> {
     if (insertedRowId != -1) {
       print('Data inserted successfully. Row ID: $insertedRowId');
       print(db.getAllData());
+      
+      
+      print('Pricccce is $price & ratio is : $ratio');
 
       Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-              builder: (ctx) => ItemListView()));
+              builder: (ctx) => ItemListView(id:groupId)));
 
     } else {
       print('Error inserting data.');

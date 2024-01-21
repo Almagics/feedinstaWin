@@ -9,8 +9,10 @@ class CardWithImageAndText extends StatelessWidget {
   final String? desc;
   final int id;
   final VoidCallback onPressed;
+  final Icon iconlist;
+  final String? price;
 
-  const CardWithImageAndText({super.key, required this.onPressed, required this.name, this.desc, required this.id});
+  const CardWithImageAndText({super.key, required this.onPressed, required this.name, this.desc, required this.id, required this.iconlist, this.price});
 
   @override
   Widget build(BuildContext context) {
@@ -29,32 +31,51 @@ class CardWithImageAndText extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               // Image at the top of the card, stretched to fill
-              Column(
+               Column(
                 children: [
-                  Icon(Icons.info,size: 50,color: Colors.grey,)
 
+                  iconlist
                 ],
               ),
 
               Column(
-                children: [
-                  Text(name ?? ''),
-                  //Text(item.price.toString() ?? '0')
-                  Text(desc ??  ''),
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Padding(
+
+                    padding: const EdgeInsets.all(8.0),
+                    child: Center(
+                      child: Text(name ?? '',
+
+                        style: const TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+
+                        ),
+
+
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      children: [
+                        Text(desc ??  ''),
+                        SizedBox(width: 10,),
+
+                        Text(price ?? '')
+
+                      ],
+                    ),
+                  )
+
+
                 ],
               ),
 
-              const Padding(
-                padding: EdgeInsets.all(8.0),
-                child: Column(
-                  children: [
 
-                   // Text('Code : ' + (item.item_id.toString() ?? '')),
-
-
-                  ],
-                ),
-              ),
 
               // Text at the bottom of the card, centered with shadow
 

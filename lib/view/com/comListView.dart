@@ -3,6 +3,7 @@ import 'package:feedinsta/model/elementModel.dart';
 import 'package:feedinsta/model/itemmodel.dart';
 import 'package:feedinsta/service/ComService.dart';
 import 'package:feedinsta/service/elementService.dart';
+import 'package:feedinsta/view/com/addComView.dart';
 import 'package:feedinsta/view/element/addElement.dart';
 import 'package:feedinsta/view/raw_item/addItem.dart';
 import 'package:feedinsta/view/widget/alertMsg.dart';
@@ -16,11 +17,14 @@ import '../../service/itemService.dart';
 import '../raw_analysis/addRawAnalysis.dart';
 import '../widget/cardItem.dart';
 import '../widget/dismissOption.dart';
+import 'comInfoView.dart';
 
 
 
 class ComListView extends StatefulWidget {
-  const ComListView({super.key});
+  const ComListView({super.key, required this.groupId});
+  
+  final int groupId;
 
   @override
   State<ComListView> createState() => _ComListViewState();
@@ -44,7 +48,11 @@ class _ComListViewState extends State<ComListView> {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.pushReplacementNamed(context, Routes.comAdd);
+
+              Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                  builder: (ctx) => AddComView(groupId: widget.groupId)));
         },
 
 
@@ -56,7 +64,7 @@ class _ComListViewState extends State<ComListView> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back,color: ColorManager.white,),
           onPressed: () {
-            Navigator.pushReplacementNamed(context, Routes.mainRoute);// Navigate back to the previous screen
+            Navigator.pushReplacementNamed(context, Routes.groupcomaList);// Navigate back to the previous screen
           },
         ),
         systemOverlayStyle: SystemUiOverlayStyle(
@@ -65,11 +73,18 @@ class _ComListViewState extends State<ComListView> {
         ),
 
         elevation: 0.0,
-        title: const Center(child: Text("قائمة  التركيبات")),
+        title: const Center(child: Text("قائمة  التركيبات",
+          style: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+          ),
+
+        )),
       ),
 
       body: FutureBuilder<List<ComModel>>(
-        future:  db.getAllData(),
+        future:  db.getAllDataByGroup(widget.groupId),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(child: CircularProgressIndicator());
@@ -89,9 +104,9 @@ class _ComListViewState extends State<ComListView> {
                       Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
-                              builder: (ctx) => AddRawAnlysis(itemName: data![index].com_name ??"", itemId: data![index].com_id??0,)));
+                              builder: (ctx) => ComInfoView(itemName: data![index].com_name ??"", itemId: data![index].com_id??0, itemAnaId: data![index].com_ana_id??0, groupId: widget.groupId,)));
 
-                    }, name: data![index].com_name ?? '', id: data![index].com_id ?? 0,
+                    }, name: data![index].com_name ?? '', id: data![index].com_id ?? 0, iconlist:   Icon(Icons.data_usage,size: 50,color: Colors.white,),
 
 
                   ),

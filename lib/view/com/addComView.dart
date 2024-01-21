@@ -13,6 +13,7 @@ import '../../model/context/dbcontext.dart';
 import '../../resources/color_manager.dart';
 import '../../resources/routes_manager.dart';
 import '../../resources/values_manager.dart';
+import '../../service/groupComService.dart';
 import '../widget/app_text_form_filed.dart';
 import 'comListView.dart';
 
@@ -20,8 +21,8 @@ import 'comListView.dart';
 
 
 class AddComView extends StatefulWidget {
-  const AddComView({Key? key}) : super(key: key);
-
+  const AddComView({Key? key, required this.groupId}) : super(key: key);
+  final int groupId;
   @override
   State<AddComView> createState() => _AddComViewState();
 }
@@ -30,6 +31,8 @@ class _AddComViewState extends State<AddComView> {
 
   final ComService db = ComService();
   final ComAnlysisService comAna = ComAnlysisService();
+
+  final GroupComService _group = GroupComService();
 
 
   final comNameController = TextEditingController();
@@ -41,6 +44,8 @@ class _AddComViewState extends State<AddComView> {
   final amountController = TextEditingController();
 
   final anlyisidController = TextEditingController();
+
+  final groupController = TextEditingController();
 
 
   final _formKey = GlobalKey<FormState>();
@@ -55,8 +60,26 @@ class _AddComViewState extends State<AddComView> {
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(100.0)));
   }
 
+
+  _getDropDownDecorationGroup({required hintText, required IconData icon}) {
+    return InputDecoration(
+        contentPadding:
+        const EdgeInsets.symmetric(horizontal: 12.0, vertical: 16.0),
+        hintText: hintText,
+        prefixIcon: Icon(icon),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(100.0)));
+  }
+
+
+
   List<Map<String, dynamic>> dropdownData = [];
+
+  List<Map<String, dynamic>> dropdownDataGroup = [];
+  
+  
   int selectedId = 0;
+
+  int selectedIdGroup = 0;
 
 
 
@@ -72,10 +95,25 @@ class _AddComViewState extends State<AddComView> {
     });
   }
 
+
+  Future<void> _loadDropdownDataGroup() async {
+
+    var data = await _group.getDropdownData();
+    setState(() {
+      dropdownDataGroup = data;
+      if (data.isNotEmpty) {
+        selectedIdGroup = data[0]['group_com_id'] as int;
+      }
+    });
+  }
+  
+  
+  
   @override
   void initState() {
     super.initState();
     _loadDropdownData();
+    _loadDropdownDataGroup();
   }
 
   @override
@@ -88,7 +126,10 @@ class _AddComViewState extends State<AddComView> {
           leading: IconButton(
             icon: Icon(Icons.arrow_back,color: ColorManager.white,),
             onPressed: () {
-              Navigator.pushReplacementNamed(context, Routes.itemList);// Navigate back to the previous screen
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                      builder: (ctx) => ComListView(groupId:widget.groupId)));
             },
           ),
           systemOverlayStyle: SystemUiOverlayStyle(
@@ -97,7 +138,16 @@ class _AddComViewState extends State<AddComView> {
           ),
 
           elevation: 0.0,
-          title: const Center(child: Text("ادخال  تركيبه جديدة")),
+          title: const Center(child: Text("ادخال  تركيبه جديدة",
+
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+            ),
+
+
+          )),
         ),
         body: SingleChildScrollView(
             child: Form(
@@ -131,9 +181,60 @@ class _AddComViewState extends State<AddComView> {
                       child: AppTextFormFiled(
 
                         controller: comNameController,
-                        hintText: "ادخل اسم الخامة",
+                        hintText: "ادخل اسم التركيبة",
                       )
                   ),
+
+
+
+
+
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      "المجموعة ",
+                      style: Theme
+                          .of(context)
+                          .textTheme
+                          .headlineMedium,
+                    ),
+                  ),
+
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: DropdownButtonFormField(
+                        validator: (value) {
+                          if (value == null) {
+                            return 'Required*';
+                          }
+                        },
+                        icon: const Icon(Icons.keyboard_arrow_down),
+                        decoration: _getDropDownDecorationGroup(
+                            hintText: 'اختر مجموعة ', icon: Icons.add_chart_outlined),
+                        items: dropdownDataGroup.map<DropdownMenuItem<int>>(
+                              (Map<String, dynamic> item) {
+                            return DropdownMenuItem<int>(
+                              value: item['group_com_id'] as int,
+                              child: Text(item['group_com_name'] as String),
+                            );
+                          },
+                        ).toList(),
+                        onChanged: (value) {
+                          setState(() {
+                            groupController.text = value.toString()!;
+                          });
+                        }),
+                  ),
+
+
+
+
+
+
+
+
+
+
 
                   Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -167,28 +268,31 @@ class _AddComViewState extends State<AddComView> {
                     ),
                   ),
 
-                  DropdownButtonFormField(
-                      validator: (value) {
-                        if (value == null) {
-                          return 'Required*';
-                        }
-                      },
-                      icon: const Icon(Icons.keyboard_arrow_down),
-                      decoration: _getDropDownDecoration(
-                          hintText: 'اختر تحليل السلالة', icon: Icons.add_chart_outlined),
-                      items: dropdownData.map<DropdownMenuItem<int>>(
-                            (Map<String, dynamic> item) {
-                          return DropdownMenuItem<int>(
-                            value: item['com_ana_id'] as int,
-                            child: Text(item['com_ana_name'] as String),
-                          );
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: DropdownButtonFormField(
+                        validator: (value) {
+                          if (value == null) {
+                            return 'Required*';
+                          }
                         },
-                      ).toList(),
-                      onChanged: (value) {
-                        setState(() {
-                          anlyisidController.text = value.toString()!;
-                        });
-                      }),
+                        icon: const Icon(Icons.keyboard_arrow_down),
+                        decoration: _getDropDownDecoration(
+                            hintText: 'اختر تحليل السلالة', icon: Icons.add_chart_outlined),
+                        items: dropdownData.map<DropdownMenuItem<int>>(
+                              (Map<String, dynamic> item) {
+                            return DropdownMenuItem<int>(
+                              value: item['com_ana_id'] as int,
+                              child: Text(item['com_ana_name'] as String),
+                            );
+                          },
+                        ).toList(),
+                        onChanged: (value) {
+                          setState(() {
+                            anlyisidController.text = value.toString()!;
+                          });
+                        }),
+                  ),
 
 
 
@@ -258,7 +362,7 @@ class _AddComViewState extends State<AddComView> {
                       ),
                     ),
                   ),
-
+SizedBox(height: 10,)
 
                 ],
               ),
@@ -271,6 +375,7 @@ class _AddComViewState extends State<AddComView> {
   void _saveitem() async {
     String comname = comNameController.text;
     int anaId = int.parse(anlyisidController.text) ;
+    int groupId = int.parse(groupController.text) ;
     String remarks = remarksController.text;
     double amount = double.parse(amountController.text);
     double qty = double.parse(qtyController.text);
@@ -280,7 +385,8 @@ class _AddComViewState extends State<AddComView> {
         com_ana_id: anaId,
         com_qty: qty,
         total_amount: amount,
-    com_remarks: remarks
+    com_remarks: remarks,
+      group_com_id: groupId
 
     );
 
@@ -294,7 +400,7 @@ class _AddComViewState extends State<AddComView> {
       Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-              builder: (ctx) => ComListView()));
+              builder: (ctx) => ComListView(groupId: groupId,)));
 
     } else {
       print('Error inserting data.');

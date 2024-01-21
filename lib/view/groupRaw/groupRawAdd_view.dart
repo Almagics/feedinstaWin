@@ -1,38 +1,42 @@
 
-import 'dart:ffi';
 
-import 'package:feedinsta/model/elementModel.dart';
-import 'package:feedinsta/model/itemmodel.dart';
-import 'package:feedinsta/service/elementService.dart';
-import 'package:feedinsta/service/itemService.dart';
+
+
+import 'package:feedinsta/model/groupRawModel.dart';
+
+
+import 'package:feedinsta/service/groupRawService.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import '../../model/context/dbcontext.dart';
+
 import '../../resources/color_manager.dart';
 import '../../resources/routes_manager.dart';
 import '../../resources/values_manager.dart';
+
 import '../widget/app_text_form_filed.dart';
-import 'listElement.dart';
+import 'groupRaw_view.dart';
 
 
 
 
-class AddElementView extends StatefulWidget {
-  const AddElementView({Key? key}) : super(key: key);
+
+class GroupRawAdd extends StatefulWidget {
+  const GroupRawAdd({Key? key}) : super(key: key);
 
   @override
-  State<AddElementView> createState() => _AddElementViewState();
+  State<GroupRawAdd> createState() => _GroupRawAddState();
 }
 
-class _AddElementViewState extends State<AddElementView> {
+class _GroupRawAddState extends State<GroupRawAdd> {
 
-  final ElementService db = ElementService();
+  final GroupRawService db = GroupRawService();
 
 
-  final elementNameController = TextEditingController();
+  final GroupNameController = TextEditingController();
 
-  final remarksController = TextEditingController();
+ // final remarksController = TextEditingController();
 
 
 
@@ -50,7 +54,7 @@ class _AddElementViewState extends State<AddElementView> {
           leading: IconButton(
             icon: Icon(Icons.arrow_back,color: ColorManager.white,),
             onPressed: () {
-              Navigator.pushReplacementNamed(context, Routes.elementList);// Navigate back to the previous screen
+              Navigator.pushReplacementNamed(context, Routes.groupRawList);// Navigate back to the previous screen
             },
           ),
           systemOverlayStyle: SystemUiOverlayStyle(
@@ -59,7 +63,7 @@ class _AddElementViewState extends State<AddElementView> {
           ),
 
           elevation: 0.0,
-          title: const Center(child: Text("ادخال عنصر جديد", style: TextStyle(
+          title: const Center(child: Text("ادخال  مجموعة  جديدة", style: TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.bold,
             color: Colors.white,
@@ -75,7 +79,7 @@ class _AddElementViewState extends State<AddElementView> {
                   Container(
                     margin: EdgeInsets.all(AppPadding.p8),
                     child: const Padding(padding: EdgeInsets.all(AppPadding.p8),
-                      child: Center(child: Text('اضافة عنصر جديدة')),
+                      child: Center(child: Text('اضافة مجموعة جديدة')),
 
 
                     ),
@@ -85,7 +89,7 @@ class _AddElementViewState extends State<AddElementView> {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
-                      "اسم العنصر",
+                      "اسم المجموعة",
                       style: Theme
                           .of(context)
                           .textTheme
@@ -96,29 +100,12 @@ class _AddElementViewState extends State<AddElementView> {
                   Padding(padding: EdgeInsets.all(AppPadding.p8),
                       child: AppTextFormFiled(
 
-                        controller: elementNameController,
-                        hintText: "ادخل اسم العنصر",
+                        controller: GroupNameController,
+                        hintText: "ادخل اسم المجموعة",
                       )
                   ),
 
 
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      "ملاحظات",
-                      style: Theme
-                          .of(context)
-                          .textTheme
-                          .headlineMedium,
-                    ),
-                  ),
-
-                  Padding(padding: EdgeInsets.all(AppPadding.p8),
-                    child: AppTextFormFiled(
-
-                      controller: remarksController,
-                      hintText: "ادخل الملاحظات",
-                    ),),
 
 
                   const SizedBox(height: 20,),
@@ -154,10 +141,10 @@ class _AddElementViewState extends State<AddElementView> {
   }
 
   void _saveitem() async {
-    String elementname = elementNameController.text;
-    String remarks = remarksController.text;
+    String name = GroupNameController.text;
 
-    var model = new ElementModel( element_name: elementname, element_remarks: remarks);
+
+    var model = new GroupRawModel( group_raw_name: name,);
 
     int insertedRowId =await db.insertData(model);
 
@@ -169,7 +156,7 @@ class _AddElementViewState extends State<AddElementView> {
       Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-              builder: (ctx) => ElementListView()));
+              builder: (ctx) => GroupListView()));
 
     } else {
       print('Error inserting data.');

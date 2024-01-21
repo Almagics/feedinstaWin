@@ -3,6 +3,7 @@ import 'package:feedinsta/model/elementModel.dart';
 import 'package:feedinsta/model/itemmodel.dart';
 import 'package:feedinsta/service/ComAnlysisService.dart';
 import 'package:feedinsta/service/elementService.dart';
+import 'package:feedinsta/view/comAnlysis/AddComAnlysis.dart';
 import 'package:feedinsta/view/raw_item/addItem.dart';
 import 'package:feedinsta/view/widget/alertMsg.dart';
 import 'package:flutter/material.dart';
@@ -19,7 +20,9 @@ import 'comAnlysisInfoView.dart';
 
 
 class ComAnlysisListView extends StatefulWidget {
-  const ComAnlysisListView({super.key});
+  const ComAnlysisListView({super.key, required this.id});
+
+  final int id;
 
   @override
   State<ComAnlysisListView> createState() => _ComAnlysisListViewState();
@@ -43,7 +46,10 @@ class _ComAnlysisListViewState extends State<ComAnlysisListView> {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.pushReplacementNamed(context, Routes.addComAnlysis);
+          Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                  builder: (ctx) => AddComAnalysisView(groupId: widget.id)));
         },
 
 
@@ -55,7 +61,7 @@ class _ComAnlysisListViewState extends State<ComAnlysisListView> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back,color: ColorManager.white,),
           onPressed: () {
-            Navigator.pushReplacementNamed(context, Routes.mainRoute);// Navigate back to the previous screen
+            Navigator.pushReplacementNamed(context, Routes.groupcomanalysisList);// Navigate back to the previous screen
           },
         ),
         systemOverlayStyle: SystemUiOverlayStyle(
@@ -64,11 +70,15 @@ class _ComAnlysisListViewState extends State<ComAnlysisListView> {
         ),
 
         elevation: 0.0,
-        title: const Center(child: Text("قائمة  تحاليل التركيبات")),
+        title: const Center(child: Text("قائمة  السلالات ", style: TextStyle(
+          fontSize: 20,
+          fontWeight: FontWeight.bold,
+          color: Colors.white,
+        ),)),
       ),
 
       body: FutureBuilder<List<ComAnlysisModel>>(
-        future: db.getAllData(),
+        future: db.getAllDataByGroup(widget.id),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(child: CircularProgressIndicator());
@@ -87,9 +97,9 @@ class _ComAnlysisListViewState extends State<ComAnlysisListView> {
                     Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
-                            builder: (ctx) => ComAnlysisInfoView(itemName: data![index].com_ana_name??'', itemId: data![index].com_ana_id??0,)));
+                            builder: (ctx) => ComAnlysisInfoView(itemName: data![index].com_ana_name??'', itemId: data![index].com_ana_id??0, groupId: widget.id,)));
 
-                  }, name: data![index].com_ana_name ?? '', id: data![index].com_ana_id ?? 0,
+                  }, name: data![index].com_ana_name ?? '', id: data![index].com_ana_id ?? 0, iconlist:   Icon(Icons.analytics,size: 50,color: Colors.white,),
 
 
                   ),
