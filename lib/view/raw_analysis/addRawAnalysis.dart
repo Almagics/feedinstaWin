@@ -41,6 +41,8 @@ class _AddRawAnlysisState extends State<AddRawAnlysis> {
 
   final qtyController = TextEditingController();
 
+  final editqtyController = TextEditingController();
+
   List<AnalysisRawModel> items = [];
 
 
@@ -141,129 +143,131 @@ class _AddRawAnlysisState extends State<AddRawAnlysis> {
         ),
 
         elevation: 0.0,
-        title: const Center(child: Text("تحليل خامة", style: TextStyle(
+        title:  Center(child: Text("تحليل خامة : ${widget.itemName}", style: TextStyle(
           fontSize: 20,
           fontWeight: FontWeight.bold,
           color: Colors.white,
         ),)),
       ),
       body: SingleChildScrollView(
-          child: Form(
-            key: _formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SafeArea(child: SizedBox.shrink()),
-                Container(
-                  margin: EdgeInsets.all(AppPadding.p8),
-                  child: const Padding(padding: EdgeInsets.all(AppPadding.p8),
-                    child: Center(child: Text('')),
-
-
-                  ),
-                ),
-
-                Container(
-                  width: MediaQuery.of(context).size.width ,
-                  margin: EdgeInsets.all(8),
-                  child: Card(
-
-                    elevation: 5.0,
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          const Icon(Icons.info, size: 48.0, color: Colors.blue),
-                          Text(
-                            widget.itemName,
-                            style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
-                          ),
-
-                          const SizedBox(height: 10.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
 
 
 
-                        ],
-                      ),
+              Container(
+                width: MediaQuery.of(context).size.width ,
+                margin: EdgeInsets.all(8),
+                child: Card(
+
+                  elevation: 5.0,
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        const Icon(Icons.info, size: 48.0, color: Colors.blue),
+                        Text(
+                          widget.itemName,
+                          style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
+                        ),
+
+                        const SizedBox(height: 10.0),
+
+
+
+                      ],
                     ),
                   ),
                 ),
-                Container(
-                  width: MediaQuery.of(context).size.width ,
-                  margin: EdgeInsets.all(8),
-                  color: ColorManager.grey,
-                  child: Card(
-                    elevation: 5.0,
-                    child: SingleChildScrollView(
+              ),
+              Container(
+                width: MediaQuery.of(context).size.width ,
+                margin: EdgeInsets.all(8),
+                color: ColorManager.grey,
+                child: Card(
+                  elevation: 5.0,
+                  child: SingleChildScrollView(
 
-                      child: Column(
+                    child: Column(
 
-                        children: [
+                      children: [
 
-                          FutureBuilder(
-                            future: _loadItems(),
-                            builder: (context, snapshot) {
-                              if (snapshot.connectionState == ConnectionState.waiting) {
-                                return Center(child: CircularProgressIndicator());
-                              } else if (snapshot.hasError) {
-                                return Center(child: Text('Error: ${snapshot.error}'));
-                              } else {
-                                 items = snapshot.data ?? [] ;
+                        FutureBuilder(
+                          future: _loadItems(),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState == ConnectionState.waiting) {
+                              return Center(child: CircularProgressIndicator());
+                            } else if (snapshot.hasError) {
+                              return Center(child: Text('Error: ${snapshot.error}'));
+                            } else {
+                               items = snapshot.data ?? [] ;
 
-                                 return DataTable(
-                                  columns: const [
-
-
-
-                                    DataColumn(label: Text('خيارات')),
-                                    DataColumn(label: Text('الكمية')),
-                                    DataColumn(label: Text('العنصر')),
-                                    DataColumn(label: Text('كود')),
-                                  ],
-                                  rows: items.asMap().entries.map((entry) {
-                                    int index = entry.key;
-                                    AnalysisRawModel model = entry.value;
-
-
-                                    return DataRow(
-                                      cells: [
-                                        DataCell(GestureDetector(
-
-                                          child: Icon(Icons.delete,color: ColorManager.error,),
-                                          onTap: () async{
-                                            await db.deleteItem(model.raw_ana_id ?? 0);
-                                            _deleteRow(index);
-                                          },
-
-                                        )
-                                        ),
-                                        DataCell(Text(model.raw_ana_qty.toString())),
-                                        DataCell(Text(model.element_name.toString())),
-
-
-                                        DataCell(Text(model.element_id.toString())),
+                               return DataTable(
+                                columns: const [
 
 
 
+                                  DataColumn(label: Text('خيارات')),
+                                  DataColumn(label: Text('الكمية')),
+                                  DataColumn(label: Text('العنصر')),
+                                  DataColumn(label: Text('كود')),
+                                ],
+                                rows: items.asMap().entries.map((entry) {
+                                  int index = entry.key;
+                                  AnalysisRawModel model = entry.value;
 
-                                      ],
-                                    );
-                                  }).toList(),
-                                );
-                              }
-                            },
-                          ),
+
+                                  return DataRow(
+                                    cells: [
+                                      DataCell(Row(
+                                        children: [
+                                          GestureDetector(
+
+                                            child: Icon(Icons.delete,color: ColorManager.error,),
+                                            onTap: () async{
+                                              await db.deleteItem(model.raw_ana_id ?? 0);
+                                              _deleteRow(index);
+                                            },
+
+                                          ),
+                                          GestureDetector(
+
+                                            child: const Icon(Icons.edit,color: Colors.blue,),
+                                            onTap: () async{
+                                              _showEditDialog(model.raw_ana_id ?? 0,model.raw_ana_qty ?? 0,model.element_name ?? '');
+                                            },
+
+                                          ),
+                                        ],
+                                      )
+                                      ),
+                                      DataCell(Text(model.raw_ana_qty.toString())),
+                                      DataCell(Text(model.element_name.toString())),
 
 
-                        ],
-                      ),
+                                      DataCell(Text(model.element_id.toString())),
+
+
+
+
+                                    ],
+                                  );
+                                }).toList(),
+                              );
+                            }
+                          },
+                        ),
+
+
+                      ],
                     ),
                   ),
-                )
+                ),
+              )
 
-              ],
-            ),
+            ],
           )
       ),
     );
@@ -341,10 +345,93 @@ class _AddRawAnlysisState extends State<AddRawAnlysis> {
     );
   }
 
+  Future<void> _showEditDialog(int itemId, double itemQty,String itemName) async {
+    // Reset values before showing the dialog
+    //selectedOption = 'Option 1';
+    textInput = '';
+
+    _textEditingController.text = '';
+
+    editqtyController.text = itemQty.toString();
+
+
+
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        SystemChannels.textInput.invokeMethod('TextInput.show');
+        return AlertDialog(
+          title: Center(child: Text('$itemName : تعديل  القيمة',style: TextStyle(color: ColorManager.primary),)),
+          content: SingleChildScrollView(
+            child: Column(
+              children: [
+
+
+
+                AppTextFormFiled(
+                  keyboardType:  TextInputType.number,
+                  iconData: Icons.numbers,
+                  controller: editqtyController,
+                  hintText: 'ادخل القيمة',
+
+                ),
+
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(false),
+              child: Text('الغاء'),
+            ),
+            TextButton(
+              onPressed:  (){
+                _updateitem(itemId);
+                print('Item qty Issssss:  $editqtyController');
+                Navigator.of(context).pop(false);
+              },
+              child: Text('حفظ'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+
+  void _updateitem(int id) async {
 
 
 
 
+    double inputqty = double.parse( editqtyController.text);
+
+
+
+
+
+    int insertedRowId =await db.updateQty(id,inputqty);
+
+
+
+    // Check if insertion was successful
+    if (insertedRowId != -1) {
+      print('Data inserted successfully. Row ID: $insertedRowId');
+      print(db.getAllData());
+
+
+      setState(() {
+
+      });
+
+
+
+    } else {
+      print('Error inserting data.');
+    }
+
+
+  }
 
 
   void _saveitem() async {

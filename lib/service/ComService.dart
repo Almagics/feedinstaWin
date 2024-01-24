@@ -1,9 +1,5 @@
 
 
-
-
-
-
 import 'package:feedinsta/model/comModel.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -62,7 +58,7 @@ class ComService{
   Future<List<ComModel>> getAllDataByGroup(int id) async {
     final db = await database.initDatabase();
 
-    List<Map<String, dynamic>> dbList = await db.query(tbl,columns: ['com_id', 'com_name'],where: 'group_com_id = ?', whereArgs: [id]);
+    List<Map<String, dynamic>> dbList = await db.query(tbl,columns: ['com_id', 'com_name', 'total_amount', 'com_qty'],where: 'group_com_id = ?', whereArgs: [id]);
     List<ComModel> list = dbList.map((map) => ComModel.fromMap(map)).toList();
     return  list;
   }

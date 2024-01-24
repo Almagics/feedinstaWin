@@ -28,6 +28,7 @@ import '../../service/comReportService.dart';
 import '../../service/itemService.dart';
 import '../../service/itemService.dart';
 import '../../service/reportFinalComService.dart';
+import '../../service/reports/reportOne.dart';
 import '../raw_item/itemList.dart';
 import '../widget/app_text_form_filed.dart';
 
@@ -35,16 +36,21 @@ import '../widget/app_text_form_filed.dart';
 
 
 class ComInfoView extends StatefulWidget {
-  const ComInfoView({Key? key, required this.itemName, required this.itemId, required this.itemAnaId, required this.groupId}) : super(key: key);
+  const ComInfoView({Key? key, required this.itemName, required this.itemId, required this.itemAnaId, required this.groupId, this.reqQty, this.reqPrice}) : super(key: key);
   final String itemName;
   final int itemId;
   final int itemAnaId;
   final int groupId;
+  final double? reqQty;
+  final double? reqPrice;
+
   @override
   State<ComInfoView> createState() => _ComInfoViewViewState();
 }
 
 class _ComInfoViewViewState extends State<ComInfoView> {
+
+
 
   final ComBodyService db = ComBodyService();
   final ItemService  itemser = ItemService();
@@ -53,7 +59,7 @@ class _ComInfoViewViewState extends State<ComInfoView> {
   final AnalysisRawService  anaItem = AnalysisRawService();
   final ComReportService rpt = ComReportService();
 
-  final ReportFinalComService rptFinal = ReportFinalComService();
+  final ReportOne rptFinal = ReportOne();
 
 
   final itemController = TextEditingController();
@@ -61,6 +67,10 @@ class _ComInfoViewViewState extends State<ComInfoView> {
   final qtyController = TextEditingController();
 
   final editqtyController = TextEditingController();
+
+  final pricController = TextEditingController();
+
+  final editpricController = TextEditingController();
 
   List<ComBodyModel> items = [];
   List<int> inth = [];
@@ -83,6 +93,9 @@ class _ComInfoViewViewState extends State<ComInfoView> {
   void dispose() {
     itemController.dispose();
     qtyController.dispose();
+    editqtyController.dispose();
+    pricController.dispose();
+    editpricController.dispose();
 
     super.dispose();
   }
@@ -140,24 +153,6 @@ class _ComInfoViewViewState extends State<ComInfoView> {
       }
     });
   }
-
-  Future<void> _getSumQty(int elmentid) async {
-
-    var idslist = await db.extractItemIds(widget.itemId);
-    if(idslist != null){
-      inth.addAll(idslist.where((element) => element != null).cast<int>());
-      var qty = await anaItem.getSumOfQuantities((inth),elmentid);
-      sumofqty = qty;
-print('sum is ${sumofqty}');
-
-    }
-
-  }
-
-
-
-
-
 
 
 
@@ -274,11 +269,13 @@ print('sum is ${sumofqty}');
                                       child: Column(
                                         crossAxisAlignment: CrossAxisAlignment.center,
                                         children: [
-                                          const Icon(Icons.info, size: 48.0, color: Colors.blue),
+                                          const Icon(Icons.add_chart_outlined, size: 48.0, color: Colors.blue),
                                           Text(
                                             widget.itemName,
                                             style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
                                           ),
+
+
 
 
 
@@ -298,7 +295,7 @@ print('sum is ${sumofqty}');
 
 
                              q1 = (dblist[0].sumAnaBodyQty /dblist[1].sumAnaBodyQty).toStringAsFixed(2) ;
-                             q2 = (dblist[0].sumElementItem /dblist[1].sumElementItem).toStringAsFixed(2) ;
+                             q2 = ((dblist[0].sumElementItem ??0) /(dblist[1].sumElementItem ??0)).toStringAsFixed(2) ;
                              q3 =  ((2/23*10000)+(4/39*10000)+(5/35.5*10000)).toStringAsFixed(2) ;
                              q4 = ((3/23*10000)+(4/39*10000)+(5/35.5*10000)).toStringAsFixed(2) ;
 
@@ -333,7 +330,23 @@ print('sum is ${sumofqty}');
                                     ),
                                   ),
                                 ),
+                                Container(
+                                  margin: EdgeInsets.all(8),
+                                  color: Colors.green,
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
 
+
+                                    children: [
+                                      Text('السعر المطلوب :${widget.reqPrice}',
+                                        style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold, color: Colors.white),
+                                      ),
+                                      SizedBox(width: 10,),
+                                      Text('الكمية المطلوبة:${widget.reqQty}', style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold, color: Colors.white),),
+
+                                    ],
+                                  ),
+                                ),
                                 Container(
                                   margin: EdgeInsets.all(8),
                                   color: ColorManager.grey,
@@ -342,11 +355,11 @@ print('sum is ${sumofqty}');
 
 
                                     children: [
-                                      Text('اجمالي السعر :${dblist.first.comTotalPrice / 2}',
+                                      Text(' السعر :${dblist[0].comTotalPrice}',
                                         style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold, color: Colors.white),
                                       ),
                                       SizedBox(width: 10,),
-                                      Text('اجمالي الكمية:${dblist.first.totalQty /2}', style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold, color: Colors.white),),
+                                      Text(' الكمية:${dblist[0].totalQty}', style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold, color: Colors.white),),
 
                                     ],
                                   ),
@@ -355,59 +368,71 @@ print('sum is ${sumofqty}');
                                 SizedBox(height: 20,),
 
 
-                                const Text('المؤشرات'),
-                                DataTable(
-                                  columns:  const [
+                                 ExpansionTile(
+                                  title: const Center(child: Text('المؤشرات',style: TextStyle(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black,
+                                  ),)),
 
-                                    DataColumn(label: Text('الموشر')),
-                                    DataColumn(label: Text('القيمة')),
+                                  children: <Widget>[
+                                    DataTable(
+                          columns:  const [
+
+                          DataColumn(label: Text('الموشر')),
+                          DataColumn(label: Text('القيمة')),
 
 
-                                  ],
-                                  rows:  [
-                                DataRow(
-                                cells: [
-                                const DataCell(Text('طاقة/بروتين السلالة')),
+                          ],
+                          rows:  [
+                          DataRow(
+                          cells: [
+                          const DataCell(Text('طاقة/بروتين السلالة')),
                           DataCell(Text(q1)),
 
                           ],),
 
 
-                                    DataRow(
-                                      cells: [
-                                        const DataCell(Text('طاقة /بروتين فعلي')),
-                                        DataCell(Text(q2)),
+                          DataRow(
+                          cells: [
+                          const DataCell(Text('طاقة /بروتين فعلي')),
+                          DataCell(Text(q2)),
 
-                                      ],),
+                          ],),
 
-                                    DataRow(
-                                      cells: [
-                                        const DataCell(Text('الكتروليت السلالة')),
-                                        DataCell(Text(q3)),
+                          DataRow(
+                          cells: [
+                          const DataCell(Text('الكتروليت السلالة')),
+                          DataCell(Text(q3)),
 
-                                      ],),
-
-
-                                    DataRow(
-                                      cells: [
-                                        const DataCell( Text('الكترولايت فعلي')),
-                                        DataCell(Text(q4)),
-
-                                      ],),
+                          ],),
 
 
+                          DataRow(
+                          cells: [
+                          const DataCell( Text('الكترولايت فعلي')),
+                          DataCell(Text(q4)),
+
+                          ],),
 
 
 
 
 
+
+
+                          ],
+
+
+
+
+
+                          ),
                                   ],
-
-
-
-
-
                                 ),
+
+
+
                               ],
                             );
                           }
@@ -431,64 +456,78 @@ print('sum is ${sumofqty}');
                     child: Column(
 
                       children: [
-                        Text('التحاليل'),
 
-                        FutureBuilder<List<ReportComModel>>(
-                          future: rptFinal.getCompositionResults(widget.itemId),
-                          builder: (context, snapshot) {
-                            if (snapshot.connectionState == ConnectionState.waiting) {
-                              return Center(child: CircularProgressIndicator());
-                            } else if (snapshot.hasError) {
-                              return Center(child: Text('Error: ${snapshot.error}'));
-                            } else  {
-                              List<ReportComModel> dblist = snapshot.data ?? [] ;
+                         ExpansionTile(
+                          title: const Center(child: Text('التحاليل',style: TextStyle(
+                    fontSize: 15,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),)),
 
-                              return DataTable(
-                                columns: const [
+                          children: <Widget>[
+                            FutureBuilder<List<ReportComModel>>(
+                              future: rptFinal.getCompositionResults(widget.itemId),
+                              builder: (context, snapshot) {
+                                if (snapshot.connectionState == ConnectionState.waiting) {
+                                  return Center(child: CircularProgressIndicator());
+                                } else if (snapshot.hasError) {
+                                  return Center(child: Text('Error: ${snapshot.error}'));
+                                } else  {
+                                  List<ReportComModel> dblist = snapshot.data ?? [] ;
 
-
-
-                                  DataColumn(label: Text('العنصر')),
-                                  DataColumn(label: Text('التحليل')),
-                                  DataColumn(label: Text('الحالي')),
-                                  DataColumn(label: Text('الحالة')),
-
-                                ],
-                                rows: dblist.asMap().entries.map((entry) {
-                                  int index = entry.key;
-                                  ReportComModel model = entry.value;
-
-
-                                  return DataRow(
-                                    cells: [
-
-                                      DataCell(Text(model.elementName.toString())),
-                                      DataCell(Text(model.sumAnaBodyQty.toStringAsFixed(2))),
-
-                                      DataCell(Text(model.sumElementItem.toStringAsFixed(2))),
+                                  return DataTable(
+                                    columns: const [
 
 
 
-
-
-
-
-                                      DataCell(
-
-                                       Text(model.status)),
-
-
-
-
-
+                                      DataColumn(label: Text('العنصر')),
+                                      DataColumn(label: Text('التحليل')),
+                                      DataColumn(label: Text('الحالي')),
+                                      DataColumn(label: Text('الحالة')),
 
                                     ],
+                                    rows: dblist.asMap().entries.map((entry) {
+                                      int index = entry.key;
+                                      ReportComModel model = entry.value;
+
+
+                                      return DataRow(
+                                        cells: [
+
+                                          DataCell(Text(model.elementName.toString())),
+                                          DataCell(Text(model.sumAnaBodyQty.toStringAsFixed(3))),
+
+                                          DataCell(Text((model.sumElementItem ?? 0).toStringAsFixed(3))),
+
+
+
+
+
+
+
+                                          DataCell(
+
+                                              Text((model.status ??''))),
+
+
+
+
+
+
+                                        ],
+                                      );
+                                    }).toList(),
                                   );
-                                }).toList(),
-                              );
-                            }
-                          },
+                                }
+                              },
+                            ),
+                          ],
                         ),
+
+
+
+
+
 
 
                       ],
@@ -558,7 +597,7 @@ print('sum is ${sumofqty}');
                                             child: Icon(Icons.edit,color: ColorManager.error,),
                                             onTap: () async{
 
-                                           await   _showEditDialog(model.com_body_id ?? 0,model.com_body_qty ?? 0,model.item_name ?? '');
+                                           await   _showEditDialog(model.com_body_id ?? 0,model.com_body_qty ?? 0,model.item_name ?? '',model.total_price ?? 0);
                                               print('body id${model.com_body_id}');
                                             },
 
@@ -643,6 +682,28 @@ print('sum is ${sumofqty}');
                       });
                     }),
 
+                const Padding(padding: EdgeInsets.all(8),
+
+                  child: Text('السعر'),
+
+
+                ),
+
+                AppTextFormFiled(
+                  keyboardType:  TextInputType.number,
+                  iconData: Icons.numbers,
+                  controller: pricController,
+                  hintText: 'ادخل السعر للكيلو',
+
+                ),
+
+                const Padding(padding: EdgeInsets.all(8),
+
+                  child: Text('الكمية'),
+
+
+                ),
+
                 AppTextFormFiled(
                   keyboardType:  TextInputType.number,
                   iconData: Icons.numbers,
@@ -673,7 +734,7 @@ print('sum is ${sumofqty}');
   }
 
 
-  Future<void> _showEditDialog(int itemId, double itemQty,String itemName) async {
+  Future<void> _showEditDialog(int itemId, double itemQty,String itemName,double price) async {
     // Reset values before showing the dialog
     //selectedOption = 'Option 1';
     textInput = '';
@@ -682,6 +743,8 @@ print('sum is ${sumofqty}');
 
     editqtyController.text = itemQty.toString();
 
+    editpricController.text = (price / itemQty).toString() ;
+
 
 
     return showDialog<void>(
@@ -689,12 +752,33 @@ print('sum is ${sumofqty}');
       builder: (BuildContext context) {
         SystemChannels.textInput.invokeMethod('TextInput.show');
         return AlertDialog(
-          title: Center(child: Text('$itemName : تعديل كمية خامة',style: TextStyle(color: ColorManager.primary),)),
+          title: Center(child: Text('  تعديل : $itemName',style: TextStyle(color: ColorManager.primary),)),
           content: SingleChildScrollView(
             child: Column(
               children: [
 
 
+                const Padding(padding: EdgeInsets.all(8),
+
+                  child: Text('السعر'),
+
+
+                ),
+
+                AppTextFormFiled(
+                  keyboardType:  TextInputType.number,
+                  iconData: Icons.numbers,
+                  controller: editpricController,
+                  hintText: 'ادخل السعر للكيلو',
+
+                ),
+
+                const Padding(padding: EdgeInsets.all(8),
+
+                  child: Text('الكمية'),
+
+
+                ),
 
                 AppTextFormFiled(
                   keyboardType:  TextInputType.number,
@@ -729,7 +813,7 @@ print('sum is ${sumofqty}');
   void _updateitem(int id) async {
 
 
-    var itemprice = await itemser.getItemPriceById(id);
+    var itemprice = double.parse( editpricController.text);
 
     double inputqty = double.parse( editqtyController.text);
 
@@ -767,7 +851,7 @@ print('sum is ${sumofqty}');
 
     var itemname = await itemser.getItemNameById(itemid);
 
-    var itemprice = await itemser.getItemPriceById(itemid);
+    var itemprice = double.parse(pricController.text);
 
     var totalprice = (itemprice ?? 0) * qty;
 

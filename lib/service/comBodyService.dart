@@ -94,8 +94,24 @@ class ComBodyService{
 
 
 
+  double calculateTotalPrice(List<ComBodyModel> comBodyList) {
+    double total = 0.0;
+    for (var comBody in comBodyList) {
 
+        total += double.parse(comBody.total_price.toString()) ;
 
+    }
+    return total;
+  }
 
+  double calculateTotalQty(List<ComBodyModel> comBodyList) {
+    double total = 0.0;
+    for (var comBody in comBodyList) {
+
+      total += double.parse(comBody.com_body_qty.toString()) ;
+
+    }
+    return total;
+  }
 
 }

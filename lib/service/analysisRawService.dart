@@ -81,7 +81,7 @@ print(' is : ${sum}');
 
   Future<double?> getItemqtyById(int itemid,int elemetnid) async {
     final db = await database.initDatabase();
-    var result = await db.query(tbl, columns: ['raw_ana_qty'], where: 'raw_id = ? AND elememt_id = ?', whereArgs: [itemid,elemetnid]);
+    var result = await db.query(tbl, columns: ['raw_ana_qty'], where: 'raw_id = ? AND element_id = ?', whereArgs: [itemid,elemetnid]);
 
     if (result.isNotEmpty) {
       return result.first['raw_ana_qty'] as double?;
@@ -90,7 +90,18 @@ print(' is : ${sum}');
     }
   }
 
+  Future<int> updateQty(int id, double newQty ) async {
+    final db = await database.initDatabase();
 
+
+
+    return await db.update(
+      tbl,
+      {'raw_ana_qty': newQty}, // Set the new value for the 'qty' column
+      where: 'raw_ana_id = ?',
+      whereArgs: [id],
+    );
+  }
 
 
 }

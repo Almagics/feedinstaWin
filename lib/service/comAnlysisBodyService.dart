@@ -85,9 +85,29 @@ class ComAnlysisBodyService{
 
 
 
+  Future<int> updateQty(int id, double newQty ) async {
+    final db = await database.initDatabase();
 
 
 
+    return await db.update(
+      tbl,
+      {'ana_body_qty': newQty}, // Set the new value for the 'qty' column
+      where: 'com_ana_body_id = ?',
+      whereArgs: [id],
+    );
+  }
+
+  Future<double?> getItemqtyById(int comana_id,int elemetnid) async {
+    final db = await database.initDatabase();
+    var result = await db.query(tbl, columns: ['ana_body_qty'], where: 'com_ana_id = ? AND element_id = ?', whereArgs: [comana_id,elemetnid]);
+
+    if (result.isNotEmpty) {
+      return result.first['ana_body_qty'] as double?;
+    } else {
+      return null;
+    }
+  }
 
 
 }

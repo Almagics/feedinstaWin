@@ -104,7 +104,7 @@ class _ComListViewState extends State<ComListView> {
                       Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
-                              builder: (ctx) => ComInfoView(itemName: data![index].com_name ??"", itemId: data![index].com_id??0, itemAnaId: data![index].com_ana_id??0, groupId: widget.groupId,)));
+                              builder: (ctx) => ComInfoView(itemName: data![index].com_name ??"", itemId: data![index].com_id??0, itemAnaId: data![index].com_ana_id??0, groupId: widget.groupId,reqPrice:data![index].total_amount ,reqQty: data![index].com_qty??0,)));
 
                     }, name: data![index].com_name ?? '', id: data![index].com_id ?? 0, iconlist:   Icon(Icons.data_usage,size: 50,color: Colors.white,),
 
