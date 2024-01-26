@@ -43,6 +43,8 @@ JOIN
     com_analysis_body cab ON cat.com_ana_id = cab.com_ana_id
 JOIN
     analysis_element_tbl ae ON cab.element_id = ae.element_id;
+    WHERE
+    c.com_id =$comId
 
     ''';
 
@@ -59,6 +61,8 @@ JOIN
     if(comntbody.length > 0){
 
       result = await db.rawQuery(query);
+
+      print('Comhead Count :: ${result.length}');
 
       // Map the query result to a list of CompositionResult objects
       compositionResults = result.map((map) {
@@ -96,6 +100,9 @@ JOIN
     var totalprice = await _body.calculateTotalPrice(bodylist);
     var totalqty = await _body.calculateTotalQty(bodylist);
 
+    print('total qty::$totalqty');
+
+    print('total Price::$totalprice');
 
 
 
@@ -110,7 +117,7 @@ JOIN
 
 
        // List<ComBodyModel> combody = await _body.getAllDataById(report.comId);
-        for(var item in comntbody){
+        for(var item in bodylist){
 
          double? elementvalue =  await _itembody.getItemqtyById(item.ram_item_id ?? 0, report.elementId ?? 0);
 
@@ -149,10 +156,10 @@ JOIN
             status: status,
            // item_id: report.item_id,
            // com_ana_id: report.com_ana_id
-        );
-      } else {
+        );} else {
         // If the elementName doesn't exist in the map, add a new entry.
-        groupedByElement[report.elementName ?? ''] = report;
+        groupedByElement[report.elementName] = report;
+
       }
     }
 

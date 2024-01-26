@@ -57,7 +57,7 @@ class _ComInfoViewViewState extends State<ComInfoView> {
   final ComAnlysisBodyService  anabody = ComAnlysisBodyService();
 
   final AnalysisRawService  anaItem = AnalysisRawService();
-  final ComReportService rpt = ComReportService();
+  //final ComReportService rpt = ComReportService();
 
   final ReportOne rptFinal = ReportOne();
 
@@ -79,7 +79,7 @@ class _ComInfoViewViewState extends State<ComInfoView> {
   List<ComReportModel> rptitems = [];
 
 
-  final _formKey = GlobalKey<FormState>();
+
 
 
   String selectedOption = 'Option 1';
@@ -251,10 +251,11 @@ class _ComInfoViewViewState extends State<ComInfoView> {
                         builder: (context, snapshot) {
 
                           List<ReportComModel> dblist = snapshot.data ?? [] ;
+                          print('Dblistttt:${dblist.length}');
 
                           if (snapshot.connectionState == ConnectionState.waiting) {
                             return const Center(child: CircularProgressIndicator());
-                          } else if (snapshot.hasError || dblist.length <= 0) {
+                          } else if (snapshot.hasError || dblist.length <= 0 ) {
 
                             return Column(
                               children: [
