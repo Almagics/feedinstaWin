@@ -41,16 +41,17 @@ class ComService{
 
 
 
-  Future<String?> getItemNameById(int id) async {
+  Future<int?> getItemAnaById(int id) async {
     final db = await database.initDatabase();
-    var result = await db.query(tbl, columns: ['item_name'], where: 'item_id = ?', whereArgs: [id]);
+    var result = await db.query(tbl, columns: ['com_ana_id'], where: 'com_id = ?', whereArgs: [id]);
 
     if (result.isNotEmpty) {
-      return result.first['item_name'] as String?;
+      return result.first['com_ana_id'] as int?;
     } else {
       return null;
     }
   }
+
 
 
 
