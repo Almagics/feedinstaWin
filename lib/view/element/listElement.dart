@@ -10,8 +10,10 @@ import '../../model/context/dbcontext.dart';
 import '../../resources/color_manager.dart';
 import '../../resources/routes_manager.dart';
 import '../../service/itemService.dart';
+import '../raw_item/raw_item_edit.dart';
 import '../widget/cardItem.dart';
 import '../widget/dismissOption.dart';
+import 'elementEdit.dart';
 
 
 
@@ -97,7 +99,8 @@ class _ElementListViewState extends State<ElementListView> {
                     Navigator.of(context).pop(true);
 
 
-                  }, index: index,);
+                  }, index: index,
+                  onEdit: ElementEditView(id: data![index].element_id ?? 0));
               },
 
             );

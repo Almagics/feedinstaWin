@@ -31,4 +31,16 @@ class GroupComAnalysisModel{
 
     );
   }
+
+
+  Map<String, dynamic> toMap() {
+    return {
+      'group_com_analysis_id': group_com_analysis_id,
+      'group_com_analysis_name': group_com_analysis_name,
+
+
+    };
+  }
+
+
 }

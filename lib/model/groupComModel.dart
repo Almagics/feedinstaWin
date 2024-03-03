@@ -31,4 +31,14 @@ class GroupComModel{
 
     );
   }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'group_com_id': group_com_id,
+      'group_com_name': group_com_name,
+
+
+    };
+  }
+
 }

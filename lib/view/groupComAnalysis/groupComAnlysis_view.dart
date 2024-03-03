@@ -16,8 +16,10 @@ import '../../resources/color_manager.dart';
 import '../../resources/routes_manager.dart';
 
 import '../comAnlysis/ComanlysisList.dart';
+import '../raw_item/raw_item_edit.dart';
 import '../widget/cardItem.dart';
 import '../widget/dismissOption.dart';
+import 'groupComAnalysisEdit_view.dart';
 
 
 
@@ -105,7 +107,8 @@ class _GroupComAnalysisListViewState extends State<GroupComAnalysisListView> {
                     Navigator.of(context).pop(true);
 
 
-                  }, index: index,);
+                  }, index: index,
+                  onEdit: GroupComAnalysisEdit(id: data![index].group_com_analysis_id ?? 0));
               },
 
             );

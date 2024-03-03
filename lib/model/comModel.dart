@@ -57,5 +57,17 @@ class ComModel{
     );
   }
 
+  Map<String, dynamic> toMap() {
+    return {
+      'com_id': com_id,
+      'com_name': com_name,
+      'com_qty':com_qty,
+      'total_amount':total_amount,
+      'com_remarks':com_remarks,
+      'com_ana_id':com_ana_id,
+      'group_com_id':group_com_id
+
+    };
+  }
 
 }

@@ -39,4 +39,16 @@ class ElementModel{
   }
 
 
+  Map<String, dynamic> toMap() {
+    return {
+      'element_id': element_id,
+      'element_name': element_name,
+      'element_remarks':element_remarks
+
+    };
+  }
+
+
+
+
 }

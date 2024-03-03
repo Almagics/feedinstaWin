@@ -13,8 +13,10 @@ import '../../model/context/dbcontext.dart';
 import '../../resources/color_manager.dart';
 import '../../resources/routes_manager.dart';
 import '../../service/itemService.dart';
+import '../raw_item/raw_item_edit.dart';
 import '../widget/cardItem.dart';
 import '../widget/dismissOption.dart';
+import 'EditComAnalysisView.dart';
 import 'comAnlysisInfoView.dart';
 
 
@@ -108,7 +110,9 @@ class _ComAnlysisListViewState extends State<ComAnlysisListView> {
                     Navigator.of(context).pop(true);
 
 
-                  }, index: index,);
+                  }, index: index,
+
+                  onEdit: EditComAnalysisView(id: data![index].com_ana_id ?? 0, groupId: data![index].group_com_analysis_id ?? 0,));
               },
 
             );

@@ -46,6 +46,16 @@ class ComAnlysisModel{
 
     );
   }
+  Map<String, dynamic> toMap() {
+    return {
+      'com_ana_id': com_ana_id,
+      'com_ana_name': com_ana_name,
+      'com_ana_remarks': com_ana_remarks,
+      'group_com_analysis_id':group_com_analysis_id
+
+
+    };
+  }
 
 
 }

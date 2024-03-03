@@ -3,6 +3,7 @@ import 'package:feedinsta/model/itemmodel.dart';
 import 'package:feedinsta/service/elementService.dart';
 import 'package:feedinsta/view/element/addElement.dart';
 import 'package:feedinsta/view/raw_item/addItem.dart';
+import 'package:feedinsta/view/raw_item/raw_item_edit.dart';
 import 'package:feedinsta/view/widget/alertMsg.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -98,6 +99,8 @@ class _OrderListViewState extends State<ItemListView> {
                         MaterialPageRoute(
                             builder: (ctx) => AddRawAnlysis(itemName: data![index].item_name ??"", itemId: data![index].item_id??0,)));
 
+                    print('naame is : ${data![index].item_id}');
+
                   },
                     name: data![index].item_name.toString() ?? '',
                     id: data![index].item_id ?? 0,
@@ -112,7 +115,12 @@ class _OrderListViewState extends State<ItemListView> {
                     Navigator.of(context).pop(true);
 
 
-                  }, index: index,);
+                  }, index: index,
+
+
+                  onEdit: EditItemView(id: data![index].item_id ?? 0)
+
+                );
               },
 
             );

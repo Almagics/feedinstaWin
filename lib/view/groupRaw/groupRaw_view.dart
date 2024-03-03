@@ -13,8 +13,10 @@ import 'package:flutter/services.dart';
 import '../../resources/color_manager.dart';
 import '../../resources/routes_manager.dart';
 
+import '../raw_item/raw_item_edit.dart';
 import '../widget/cardItem.dart';
 import '../widget/dismissOption.dart';
+import 'groupRowEdit.dart';
 
 
 
@@ -102,7 +104,9 @@ class _GroupListViewState extends State<GroupListView> {
                     Navigator.of(context).pop(true);
 
 
-                  }, index: index,);
+                  }, index: index,
+                  onEdit: GroupRawEdit(id: data![index].group_raw_id ?? 0)
+                  );
               },
 
             );

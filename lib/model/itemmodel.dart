@@ -52,5 +52,15 @@ class ItemModel{
     );
   }
 
-
+// Convert ItemModel to a map
+  Map<String, dynamic> toMap() {
+    return {
+      'item_id': item_id,
+      'item_name': item_name,
+      'price': price,
+      'ratio': ratio,
+      'group_raw_id': group_raw_id,
+      'remarks': remarks,
+    };
+  }
 }

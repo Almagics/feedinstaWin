@@ -13,8 +13,10 @@ import '../../resources/color_manager.dart';
 import '../../resources/routes_manager.dart';
 
 import '../../service/groupComService.dart';
+import '../raw_item/raw_item_edit.dart';
 import '../widget/cardItem.dart';
 import '../widget/dismissOption.dart';
+import 'groupComEdit_view.dart';
 
 
 
@@ -102,7 +104,8 @@ class _GroupComListViewState extends State<GroupComListView> {
                     Navigator.of(context).pop(true);
 
 
-                  }, index: index,);
+                  }, index: index,
+                  onEdit: GroupComEdit(id: data![index].group_com_id ?? 0));
               },
 
             );

@@ -1,0 +1,220 @@
+
+
+
+
+import 'package:feedinsta/model/groupComanalysisModel.dart';
+import 'package:feedinsta/model/groupRawModel.dart';
+import 'package:feedinsta/service/groupComAnalysis.dart';
+
+
+import 'package:feedinsta/service/groupRawService.dart';
+import 'package:feedinsta/view/groupComAnalysis/groupComAnlysis_view.dart';
+
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+
+
+import '../../resources/color_manager.dart';
+import '../../resources/routes_manager.dart';
+import '../../resources/values_manager.dart';
+
+import '../widget/app_text_form_filed.dart';
+
+
+
+
+
+
+class GroupComAnalysisEdit extends StatefulWidget {
+  const GroupComAnalysisEdit({Key? key, required this.id}) : super(key: key);
+  final int id;
+  @override
+  State<GroupComAnalysisEdit> createState() => _GroupComAnalysisEditState();
+}
+
+class _GroupComAnalysisEditState extends State<GroupComAnalysisEdit> {
+
+  final GroupComAnalysisService db = GroupComAnalysisService();
+
+
+  var GroupNameController = TextEditingController();
+
+  final _formKey = GlobalKey<FormState>();
+
+
+
+  GroupComAnalysisModel model =  GroupComAnalysisModel(  group_com_analysis_name: '');
+
+
+
+  Future<GroupComAnalysisModel> getinfo() async {
+
+    model = await db.getItemById(widget.id);
+    print('group: ${GroupNameController.text}');
+    return model;
+
+  }
+
+
+  @override
+  void dispose() {
+    GroupNameController.dispose();
+
+
+    super.dispose();
+  }
+
+
+
+
+
+
+
+
+
+  @override
+  Widget build(BuildContext context) {
+    return Directionality(
+      textDirection: TextDirection.rtl,
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.orange,
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back,color: ColorManager.white,),
+            onPressed: () {
+              Navigator.pushReplacementNamed(context, Routes.groupcomaList);// Navigate back to the previous screen
+            },
+          ),
+          systemOverlayStyle: SystemUiOverlayStyle(
+              statusBarColor: ColorManager.darkGrey,
+              statusBarBrightness: Brightness.light
+          ),
+
+          elevation: 0.0,
+          title: const Center(child: Text("تعديل بيانات مجموعة سلالة", style: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+          ),)),
+        ),
+        body: SingleChildScrollView(
+            child: Form(
+              key: _formKey,
+              child:
+
+              FutureBuilder(
+                future: getinfo(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    // Display a loading indicator while waiting for the future to complete
+                    return CircularProgressIndicator();
+                  } else if (snapshot.hasError) {
+                    // Display an error message if the future encounters an error
+                    return Text('Error: ${snapshot.error}');
+                  } else {
+
+                    GroupNameController = TextEditingController(text: snapshot.data!.group_com_analysis_name);
+
+                    // Display the data once the future is complete
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const SafeArea(child: SizedBox.shrink()),
+                        Container(
+                          margin: EdgeInsets.all(AppPadding.p8),
+                          child: const Padding(padding: EdgeInsets.all(AppPadding.p8),
+                            child: Center(child: Text('تعديل بيانات مجموعة سلالة')),
+
+
+                          ),
+                        ),
+
+
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            "اسم المجموعة",
+                            style: Theme
+                                .of(context)
+                                .textTheme
+                                .headlineMedium,
+                          ),
+                        ),
+
+                        Padding(padding: EdgeInsets.all(AppPadding.p8),
+                            child: AppTextFormFiled(
+
+                              controller: GroupNameController,
+                              hintText: "ادخل اسم المجموعة",
+                            )
+                        ),
+
+
+
+
+                        const SizedBox(height: 20,),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(3, 0, 3, 0),
+                          child: Center(
+                            child: SizedBox(width: 380, height: 50,
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  //pageController.animateToPage(getNextIndex, duration: const Duration(microseconds: AppConstants.splashDelay), curve: Curves.bounceInOut);
+                                  _saveitem();
+                                },
+
+
+                                style: Theme
+                                    .of(context)
+                                    .elevatedButtonTheme
+                                    .style,
+                                child: const Text("حفظ"),
+
+                              ),
+                            ),
+                          ),
+                        ),
+
+
+                      ],
+                    );
+                  }
+                },
+              ),
+
+
+
+
+            )
+        ),
+      ),
+    );
+  }
+
+  void _saveitem() async {
+    String name = GroupNameController.text;
+
+
+    var model =  GroupComAnalysisModel( group_com_analysis_name: name,group_com_analysis_id: widget.id);
+
+    int? insertedRowId =await db.updateItem(model);
+
+    // Check if insertion was successful
+    if (insertedRowId != -1) {
+      print('Data inserted successfully. Row ID: $insertedRowId');
+      print(db.getAllData());
+
+      Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+              builder: (ctx) => GroupComAnalysisListView()));
+
+    } else {
+      print('Error inserting data.');
+    }
+
+
+  }
+
+
+}

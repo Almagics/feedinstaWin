@@ -65,5 +65,48 @@ class GroupRawService{
 
 
 
+  Future<int?> updateItem(GroupRawModel updatedItem) async {
+    final db = await database.initDatabase();
+
+    int rowsAffected = await db.update(
+      tbl,
+      updatedItem.toMap(), // Assuming toMap() is a method in ItemModel to convert it to a Map.
+      where: 'group_raw_id = ?',
+      whereArgs: [updatedItem.group_raw_id],
+    );
+
+
+    if (rowsAffected > 0) {
+      // Update successful, return the updated item ID
+      return updatedItem.group_raw_id;
+    } else {
+      // Update failed, return a default or error value, e.g., -1
+      return -1;
+    }
+  }
+
+
+  Future<GroupRawModel> getItemById(int id) async {
+
+    GroupRawModel model = GroupRawModel(group_raw_name: '');
+    final db = await database.initDatabase();
+
+    List<Map<String, dynamic>> dbList = await db.query(tbl, columns: ['group_raw_id', 'group_raw_name'], where: 'group_raw_id = ?', whereArgs: [id]);
+
+    if (dbList.isEmpty) {
+      // Handle the case where the item with the specified ID is not found
+      return model;
+    }
+
+    model = GroupRawModel.fromMap(dbList.first);
+    print('iteeeem : ${model.group_raw_id}');
+    return model;
+  }
+
+
+
+
+
+
 
 }

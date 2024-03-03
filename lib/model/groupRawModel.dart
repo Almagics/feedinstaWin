@@ -31,4 +31,13 @@ class GroupRawModel{
 
     );
   }
+
+  // Convert ItemModel to a map
+  Map<String, dynamic> toMap() {
+    return {
+      'group_raw_id': group_raw_id,
+      'group_raw_name': group_raw_name,
+
+    };
+  }
 }

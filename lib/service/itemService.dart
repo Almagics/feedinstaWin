@@ -89,4 +89,44 @@ final String tbl = "raw_item_tbl";
   }
 
 
+  Future<int?> updateItem(ItemModel updatedItem) async {
+    final db = await database.initDatabase();
+
+    int rowsAffected = await db.update(
+      tbl,
+      updatedItem.toMap(), // Assuming toMap() is a method in ItemModel to convert it to a Map.
+      where: 'item_id = ?',
+      whereArgs: [updatedItem.item_id],
+    );
+
+
+    if (rowsAffected > 0) {
+      // Update successful, return the updated item ID
+      return updatedItem.item_id;
+    } else {
+      // Update failed, return a default or error value, e.g., -1
+      return -1;
+    }
+  }
+
+
+  Future<ItemModel> getItemById(int id) async {
+
+    ItemModel model = ItemModel(item_name: '', remarks: '', price: 0, ratio: '', group_raw_id: 0);
+    final db = await database.initDatabase();
+
+    List<Map<String, dynamic>> dbList = await db.query(tbl, columns: ['item_id', 'item_name', 'price', 'ratio', 'group_raw_id', 'remarks'], where: 'item_id = ?', whereArgs: [id]);
+
+    if (dbList.isEmpty) {
+      // Handle the case where the item with the specified ID is not found
+      return model;
+    }
+
+     model = ItemModel.fromMap(dbList.first);
+    print('iteeeem : ${model.group_raw_id}');
+    return model;
+  }
+
+
+
 }

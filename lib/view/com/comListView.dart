@@ -15,8 +15,10 @@ import '../../resources/color_manager.dart';
 import '../../resources/routes_manager.dart';
 import '../../service/itemService.dart';
 import '../raw_analysis/addRawAnalysis.dart';
+import '../raw_item/raw_item_edit.dart';
 import '../widget/cardItem.dart';
 import '../widget/dismissOption.dart';
+import 'EditComView.dart';
 import 'comInfoView.dart';
 
 
@@ -115,7 +117,8 @@ class _ComListViewState extends State<ComListView> {
                     Navigator.of(context).pop(true);
 
 
-                  }, index: index,);
+                  }, index: index,
+                  onEdit: EditComView(id: data![index].com_id ?? 0,groupId: data![index].group_com_id ?? 0 ,),);
               },
 
             );

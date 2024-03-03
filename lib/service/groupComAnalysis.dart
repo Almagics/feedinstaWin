@@ -65,6 +65,45 @@ class GroupComAnalysisService{
   }
 
 
+  Future<int?> updateItem(GroupComAnalysisModel updatedItem) async {
+    final db = await database.initDatabase();
+
+    int rowsAffected = await db.update(
+      tbl,
+      updatedItem.toMap(), // Assuming toMap() is a method in ItemModel to convert it to a Map.
+      where: 'group_com_analysis_id = ?',
+      whereArgs: [updatedItem.group_com_analysis_id],
+    );
+
+
+    if (rowsAffected > 0) {
+      // Update successful, return the updated item ID
+      return updatedItem.group_com_analysis_id;
+    } else {
+      // Update failed, return a default or error value, e.g., -1
+      return -1;
+    }
+  }
+
+
+  Future<GroupComAnalysisModel> getItemById(int id) async {
+
+    GroupComAnalysisModel model = GroupComAnalysisModel( group_com_analysis_name: '');
+    final db = await database.initDatabase();
+
+    List<Map<String, dynamic>> dbList = await db.query(tbl, columns: ['group_com_analysis_id', 'group_com_analysis_name'], where: 'group_com_analysis_id = ?', whereArgs: [id]);
+
+    if (dbList.isEmpty) {
+      // Handle the case where the item with the specified ID is not found
+      return model;
+    }
+
+    model = GroupComAnalysisModel.fromMap(dbList.first);
+    print('iteeeem : ${model.group_com_analysis_id}');
+    return model;
+  }
+
+
 
 
 }
