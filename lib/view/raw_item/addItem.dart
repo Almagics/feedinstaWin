@@ -7,6 +7,7 @@ import 'package:feedinsta/service/itemService.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../../l10n/l10n.dart';
 import '../../model/context/dbcontext.dart';
 import '../../resources/color_manager.dart';
 import '../../resources/routes_manager.dart';
@@ -105,7 +106,7 @@ class _RegisterViewState extends State<AddItemView> {
           ),
 
           elevation: 0.0,
-          title: const Center(child: Text("ادخال صنف جديد", style: TextStyle(
+          title:  Center(child: Text(getTranslated(context ,'addnewitem'), style: TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.bold,
             color: Colors.white,
@@ -120,8 +121,8 @@ class _RegisterViewState extends State<AddItemView> {
                   const SafeArea(child: SizedBox.shrink()),
                   Container(
                     margin: EdgeInsets.all(AppPadding.p8),
-                    child: const Padding(padding: EdgeInsets.all(AppPadding.p8),
-                      child: Center(child: Text('اضافة خامة جديدة')),
+                    child:  Padding(padding: EdgeInsets.all(AppPadding.p8),
+                      child: Center(child: Text(getTranslated(context ,'addnewraw'))),
 
 
                     ),
@@ -131,7 +132,7 @@ class _RegisterViewState extends State<AddItemView> {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
-                      "اسم الخامة",
+                      getTranslated(context ,'rawname'),
                       style: Theme
                           .of(context)
                           .textTheme
@@ -143,7 +144,7 @@ class _RegisterViewState extends State<AddItemView> {
                       child: AppTextFormFiled(
 
                         controller: itemNameController,
-                        hintText: "ادخل اسم الخامة",
+                        hintText: getTranslated(context ,'enterrawname'),
                       )
                   ),
 
@@ -152,7 +153,7 @@ class _RegisterViewState extends State<AddItemView> {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
-                      "المجموعة",
+                      getTranslated(context ,'group'),
                       style: Theme
                           .of(context)
                           .textTheme
@@ -171,7 +172,7 @@ class _RegisterViewState extends State<AddItemView> {
                           },
                           icon: const Icon(Icons.keyboard_arrow_down),
                           decoration: _getDropDownDecoration(
-                              hintText: 'اختر المجموعة', icon: Icons.add_chart_outlined),
+                              hintText: getTranslated(context, 'selectGroup'), icon: Icons.add_chart_outlined),
                           items: dropdownData.map<DropdownMenuItem<int>>(
                                 (Map<String, dynamic> item) {
                               return DropdownMenuItem<int>(
@@ -192,7 +193,7 @@ class _RegisterViewState extends State<AddItemView> {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
-                      " السعر",
+                      getTranslated(context, 'price'),
                       style: Theme
                           .of(context)
                           .textTheme
@@ -204,7 +205,7 @@ class _RegisterViewState extends State<AddItemView> {
                       child: AppTextFormFiled(
 
                         controller: priceController,
-                        hintText: "ادخل  السعر",
+                        hintText: getTranslated(context, 'enterprice'),
                         keyboardType: TextInputType.number,
 
                       )
@@ -216,7 +217,7 @@ class _RegisterViewState extends State<AddItemView> {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
-                      "معدل الاضافة",
+                      getTranslated(context ,'AdditionRate'),
                       style: Theme
                           .of(context)
                           .textTheme
@@ -228,7 +229,7 @@ class _RegisterViewState extends State<AddItemView> {
                       child: AppTextFormFiled(
 
                         controller: ratioController,
-                        hintText: "ادخل معدل الاضافة",
+                       // hintText: "ادخل معدل الاضافة",
                       )
                   ),
 
@@ -241,7 +242,7 @@ class _RegisterViewState extends State<AddItemView> {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
-                      "ملاحظات",
+                      getTranslated(context ,'notes'),
                       style: Theme
                           .of(context)
                           .textTheme
@@ -253,7 +254,7 @@ class _RegisterViewState extends State<AddItemView> {
                     child: AppTextFormFiled(
 
                       controller: remarksController,
-                      hintText: "ادخل الملاحظات",
+                      //hintText: "ادخل الملاحظات",
                     ),),
 
 
@@ -273,7 +274,7 @@ class _RegisterViewState extends State<AddItemView> {
                               .of(context)
                               .elevatedButtonTheme
                               .style,
-                          child: const Text("حفظ"),
+                          child:  Text(getTranslated(context ,'save')),
 
                         ),
                       ),

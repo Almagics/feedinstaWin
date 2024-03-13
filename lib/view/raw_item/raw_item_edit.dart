@@ -7,6 +7,7 @@ import 'package:feedinsta/service/itemService.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../../l10n/l10n.dart';
 import '../../model/context/dbcontext.dart';
 import '../../resources/color_manager.dart';
 import '../../resources/routes_manager.dart';
@@ -134,7 +135,7 @@ class _EditItemViewState extends State<EditItemView> {
           ),
 
           elevation: 0.0,
-          title: const Center(child: Text("تعديل بيانات صنف", style: TextStyle(
+          title:  Center(child: Text(getTranslated(context ,'edititemdata'), style: TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.bold,
             color: Colors.white,
@@ -149,8 +150,8 @@ class _EditItemViewState extends State<EditItemView> {
                   const SafeArea(child: SizedBox.shrink()),
                   Container(
                     margin: EdgeInsets.all(AppPadding.p8),
-                    child: const Padding(padding: EdgeInsets.all(AppPadding.p8),
-                      child: Center(child: Text('تعدسل بيانات صنف')),
+                    child:  Padding(padding: EdgeInsets.all(AppPadding.p8),
+                      child: Center(child: Text(getTranslated(context ,'edititemdata'))),
 
 
                     ),
@@ -160,7 +161,7 @@ class _EditItemViewState extends State<EditItemView> {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
-                      "اسم الخامة",
+                      getTranslated(context ,'rawname'),
                       style: Theme
                           .of(context)
                           .textTheme
@@ -172,7 +173,7 @@ class _EditItemViewState extends State<EditItemView> {
                       child: AppTextFormFiled(
 
                         controller: itemNameController,
-                        hintText: "ادخل اسم الخامة",
+                        hintText: getTranslated(context ,'enterrawname'),
                       )
                   ),
 
@@ -181,7 +182,7 @@ class _EditItemViewState extends State<EditItemView> {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
-                      "المجموعة",
+                      getTranslated(context ,'group'),
                       style: Theme
                           .of(context)
                           .textTheme
@@ -200,7 +201,7 @@ class _EditItemViewState extends State<EditItemView> {
                         },
                         icon: const Icon(Icons.keyboard_arrow_down),
                         decoration: _getDropDownDecoration(
-                            hintText: 'اختر المجموعة', icon: Icons.add_chart_outlined),
+                            hintText: getTranslated(context ,'group'), icon: Icons.add_chart_outlined),
                         value: selectedId,
                         items: dropdownData.map<DropdownMenuItem<int>>(
                               (Map<String, dynamic> item) {
@@ -223,7 +224,7 @@ class _EditItemViewState extends State<EditItemView> {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
-                      " السعر",
+                      getTranslated(context ,'price'),
                       style: Theme
                           .of(context)
                           .textTheme
@@ -235,7 +236,7 @@ class _EditItemViewState extends State<EditItemView> {
                       child: AppTextFormFiled(
 
                         controller: priceController,
-                        hintText: "ادخل  السعر",
+                        hintText: getTranslated(context ,'enterprice'),
                         keyboardType: TextInputType.number,
 
                       )
@@ -247,7 +248,7 @@ class _EditItemViewState extends State<EditItemView> {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
-                      "معدل الاضافة",
+                      getTranslated(context ,'AdditionRate'),
                       style: Theme
                           .of(context)
                           .textTheme
@@ -259,7 +260,7 @@ class _EditItemViewState extends State<EditItemView> {
                       child: AppTextFormFiled(
 
                         controller: ratioController,
-                        hintText: "ادخل معدل الاضافة",
+                       // hintText: "ادخل معدل الاضافة",
                       )
                   ),
 
@@ -272,7 +273,7 @@ class _EditItemViewState extends State<EditItemView> {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
-                      "ملاحظات",
+                      getTranslated(context ,'notes'),
                       style: Theme
                           .of(context)
                           .textTheme
@@ -284,7 +285,7 @@ class _EditItemViewState extends State<EditItemView> {
                     child: AppTextFormFiled(
 
                       controller: remarksController,
-                      hintText: "ادخل الملاحظات",
+                     // hintText: "ادخل الملاحظات",
                     ),),
 
 
@@ -304,7 +305,7 @@ class _EditItemViewState extends State<EditItemView> {
                               .of(context)
                               .elevatedButtonTheme
                               .style,
-                          child: const Text("حفظ"),
+                          child:  Text( getTranslated(context ,'save')),
 
                         ),
                       ),

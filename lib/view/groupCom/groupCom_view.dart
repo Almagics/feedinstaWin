@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 
+import '../../l10n/l10n.dart';
 import '../../resources/color_manager.dart';
 import '../../resources/routes_manager.dart';
 
@@ -66,7 +67,7 @@ class _GroupComListViewState extends State<GroupComListView> {
         ),
 
         elevation: 0.0,
-        title: const Center(child: Text("قائمة مجموعات التركيبات ", style: TextStyle(
+        title:  Center(child: Text(getTranslated(context ,'listGroupfixture'), style: const TextStyle(
           fontSize: 20,
           fontWeight: FontWeight.bold,
           color: Colors.white,

@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 
+import '../../l10n/l10n.dart';
 import '../../resources/color_manager.dart';
 import '../../resources/routes_manager.dart';
 import '../../resources/values_manager.dart';
@@ -93,167 +94,164 @@ class _AddComAnalysisViewState extends State<AddComAnalysisView> {
 
   @override
   Widget build(BuildContext context) {
-    return Directionality(
-      textDirection: TextDirection.rtl,
-      child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.orange,
-          leading: IconButton(
-            icon: Icon(Icons.arrow_back,color: ColorManager.white,),
-            onPressed: () {
-              Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                      builder: (ctx) => ComAnlysisListView( id: widget.groupId)));
-            },
-          ),
-          systemOverlayStyle: SystemUiOverlayStyle(
-              statusBarColor: ColorManager.darkGrey,
-              statusBarBrightness: Brightness.light
-          ),
-
-          elevation: 0.0,
-          title: const Center(child: Text("اضافة  تحليل سلالة",
-            style: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-            color: Colors.white,
-          ),)),
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.orange,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back,color: ColorManager.white,),
+          onPressed: () {
+            Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                    builder: (ctx) => ComAnlysisListView( id: widget.groupId)));
+          },
         ),
-        body: SingleChildScrollView(
-            child: Form(
-              key: _formKey,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SafeArea(child: SizedBox.shrink()),
-                  Container(
-                    margin: EdgeInsets.all(AppPadding.p8),
-                    child: const Padding(padding: EdgeInsets.all(AppPadding.p8),
-                      child: Center(child: Text("اضافة  تحليل سلالة")),
+        systemOverlayStyle: SystemUiOverlayStyle(
+            statusBarColor: ColorManager.darkGrey,
+            statusBarBrightness: Brightness.light
+        ),
+
+        elevation: 0.0,
+        title:  Center(child: Text(getTranslated(context, 'addbreedana'),
+          style: TextStyle(
+          fontSize: 20,
+          fontWeight: FontWeight.bold,
+          color: Colors.white,
+        ),)),
+      ),
+      body: SingleChildScrollView(
+          child: Form(
+            key: _formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SafeArea(child: SizedBox.shrink()),
+                Container(
+                  margin: EdgeInsets.all(AppPadding.p8),
+                  child:  Padding(padding: EdgeInsets.all(AppPadding.p8),
+                    child: Center(child: Text(getTranslated(context, 'addbreedana'))),
 
 
-                    ),
                   ),
+                ),
 
 
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      "اسم التحليل",
-                      style: Theme
-                          .of(context)
-                          .textTheme
-                          .headlineMedium,
-                    ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    getTranslated(context, 'analysisname'),
+                    style: Theme
+                        .of(context)
+                        .textTheme
+                        .headlineMedium,
                   ),
+                ),
 
-                  Padding(padding: EdgeInsets.all(AppPadding.p8),
-                      child: AppTextFormFiled(
-
-                        controller: comAnalysisNameController,
-                        hintText: "ادخل اسم السلالة",
-                      )
-                  ),
-
-
-
-
-
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      "المجموعة",
-                      style: Theme
-                          .of(context)
-                          .textTheme
-                          .headlineMedium,
-                    ),
-                  ),
-
-                  Padding(padding: EdgeInsets.all(AppPadding.p8),
-                    child:
-
-                    DropdownButtonFormField(
-                        validator: (value) {
-                          if (value == null) {
-                            return 'Required*';
-                          }
-                        },
-                        icon: const Icon(Icons.keyboard_arrow_down),
-                        decoration: _getDropDownDecoration(
-                            hintText: 'اختر المجموعة', icon: Icons.add_chart_outlined),
-                        items: dropdownData.map<DropdownMenuItem<int>>(
-                              (Map<String, dynamic> item) {
-                            return DropdownMenuItem<int>(
-                              value: item['group_com_analysis_id'] as int,
-                              child: Text(item['group_com_analysis_name'] as String),
-                            );
-                          },
-                        ).toList(),
-                        onChanged: (value) {
-                          setState(() {
-                            groupController.text = value.toString()!;
-                          });
-                        }),
-                  ),
-
-
-
-
-
-
-
-
-
-
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      "ملاحظات",
-                      style: Theme
-                          .of(context)
-                          .textTheme
-                          .headlineMedium,
-                    ),
-                  ),
-
-                  Padding(padding: EdgeInsets.all(AppPadding.p8),
+                Padding(padding: EdgeInsets.all(AppPadding.p8),
                     child: AppTextFormFiled(
 
-                      controller: remarksController,
-                      hintText: "ادخل الملاحظات",
-                    ),),
+                      controller: comAnalysisNameController,
+                     // hintText: "ادخل اسم السلالة",
+                    )
+                ),
 
 
-                  const SizedBox(height: 20,),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(3, 0, 3, 0),
-                    child: Center(
-                      child: SizedBox(width: 380, height: 50,
-                        child: ElevatedButton(
-                          onPressed: () {
-                            //pageController.animateToPage(getNextIndex, duration: const Duration(microseconds: AppConstants.splashDelay), curve: Curves.bounceInOut);
-                            _saveitem();
-                          },
 
 
-                          style: Theme
-                              .of(context)
-                              .elevatedButtonTheme
-                              .style,
-                          child: const Text("حفظ"),
 
-                        ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    getTranslated(context, 'group'),
+                    style: Theme
+                        .of(context)
+                        .textTheme
+                        .headlineMedium,
+                  ),
+                ),
+
+                Padding(padding: EdgeInsets.all(AppPadding.p8),
+                  child:
+
+                  DropdownButtonFormField(
+                      validator: (value) {
+                        if (value == null) {
+                          return 'Required*';
+                        }
+                      },
+                      icon: const Icon(Icons.keyboard_arrow_down),
+                      decoration: _getDropDownDecoration(
+                          hintText:  getTranslated(context, 'selectGroup'), icon: Icons.add_chart_outlined),
+                      items: dropdownData.map<DropdownMenuItem<int>>(
+                            (Map<String, dynamic> item) {
+                          return DropdownMenuItem<int>(
+                            value: item['group_com_analysis_id'] as int,
+                            child: Text(item['group_com_analysis_name'] as String),
+                          );
+                        },
+                      ).toList(),
+                      onChanged: (value) {
+                        setState(() {
+                          groupController.text = value.toString()!;
+                        });
+                      }),
+                ),
+
+
+
+
+
+
+
+
+
+
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    getTranslated(context, 'notes'),
+                    style: Theme
+                        .of(context)
+                        .textTheme
+                        .headlineMedium,
+                  ),
+                ),
+
+                Padding(padding: EdgeInsets.all(AppPadding.p8),
+                  child: AppTextFormFiled(
+
+                    controller: remarksController,
+                   // hintText: "ادخل الملاحظات",
+                  ),),
+
+
+                const SizedBox(height: 20,),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(3, 0, 3, 0),
+                  child: Center(
+                    child: SizedBox(width: 380, height: 50,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          //pageController.animateToPage(getNextIndex, duration: const Duration(microseconds: AppConstants.splashDelay), curve: Curves.bounceInOut);
+                          _saveitem();
+                        },
+
+
+                        style: Theme
+                            .of(context)
+                            .elevatedButtonTheme
+                            .style,
+                        child:  Text(getTranslated(context, 'save')),
+
                       ),
                     ),
                   ),
+                ),
 
 
-                ],
-              ),
-            )
-        ),
+              ],
+            ),
+          )
       ),
     );
   }

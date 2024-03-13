@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../../l10n/l10n.dart';
 import '../../model/context/fillDatabase.dart';
 import '../../resources/assets_manager.dart';
 import '../../resources/color_manager.dart';
@@ -48,9 +49,9 @@ class _MainViewState extends State<MainView> {
 
                     ),
                     child: Center(
-                      child: Text('Feedak Formula Poultry',
+                      child: Text(getTranslated(context, 'homePageTitle'),
                       style: TextStyle(
-                        fontSize: 30,
+                        fontSize: 25,
                         fontWeight: FontWeight.bold,
                         color: ColorManager.white
 
@@ -89,10 +90,10 @@ class _MainViewState extends State<MainView> {
 
                             ),
                           child: Center(
-                            child: Text("الخامات",
+                            child: Text(getTranslated(context, 'RawMaterials'),
 
                               style: TextStyle(
-                                  fontSize: 20,
+                                  fontSize: 15,
                                   fontWeight: FontWeight.bold,
                                   color: ColorManager.white,
                               ),
@@ -130,10 +131,10 @@ class _MainViewState extends State<MainView> {
 
                             ),
                             child: Center(
-                              child: Text("دليل السلالات",
+                              child: Text(getTranslated(context, 'BreeGuide'),
 
                                 style: TextStyle(
-                                  fontSize: 20,
+                                  fontSize: 15,
                                   fontWeight: FontWeight.bold,
                                   color: ColorManager.white,
 
@@ -190,10 +191,10 @@ const SizedBox(height: 25,),
 
                               ),
                               child: Center(
-                                child: Text("بنود التحليل",
+                                child: Text(getTranslated(context, 'AnalysisName'),
 
                                   style: TextStyle(
-                                    fontSize: 20,
+                                    fontSize: 15,
                                     fontWeight: FontWeight.bold,
                                     color: ColorManager.white,
 
@@ -235,10 +236,10 @@ const SizedBox(height: 25,),
 
                               ),
                               child: Center(
-                                child: Text("التركيبات",
+                                child: Text(getTranslated(context, 'Installations'),
 
                                   style: TextStyle(
-                                    fontSize: 20,
+                                    fontSize: 15,
                                     fontWeight: FontWeight.bold,
                                     color: ColorManager.white,
 
@@ -271,50 +272,6 @@ const SizedBox(height: 25,),
                   ),
 
 SizedBox(height: 40,),
-              /*    Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      GestureDetector(
-                        onTap: () async {
-                        await _filldatabase.insertAll();
-
-                        },
-                        child: Container(
-                            height: 60.0,
-                            width: MediaQuery.of(context).size.width * .4,
-                            // margin: const EdgeInsets.only(left: 10.0,right: 10.0),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10.0),
-                              color: Colors.green,
-
-                            ),
-                            child: Center(
-                              child: Text("بيانات افتراضية",
-
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
-                                  color: ColorManager.white,
-
-
-
-                                ),
-
-                              ),
-                            )
-
-                        ),
-                      ),
-                    ],
-                  )
-
-
-               */
-
-
-
-
-
 
 
 

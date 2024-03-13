@@ -6,6 +6,7 @@ import 'package:feedinsta/view/widget/alertMsg.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../../l10n/l10n.dart';
 import '../../model/context/dbcontext.dart';
 import '../../resources/color_manager.dart';
 import '../../resources/routes_manager.dart';
@@ -63,7 +64,7 @@ class _ElementListViewState extends State<ElementListView> {
         ),
 
         elevation: 0.0,
-        title: const Center(child: Text("قائمة عناصر التحليل", style: TextStyle(
+        title:  Center(child: Text(getTranslated(context, 'elmentsList'), style: TextStyle(
           fontSize: 20,
           fontWeight: FontWeight.bold,
           color: Colors.white,

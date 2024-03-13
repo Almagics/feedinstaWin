@@ -15,6 +15,7 @@ import 'package:feedinsta/service/itemService.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../../l10n/l10n.dart';
 import '../../model/context/dbcontext.dart';
 import '../../resources/color_manager.dart';
 import '../../resources/routes_manager.dart';
@@ -157,7 +158,7 @@ class _ComAnlysisInfoViewState extends State<ComAnlysisInfoView> {
         ),
 
         elevation: 0.0,
-        title: const Center(child: Text("تحليل السلالة", style: TextStyle(
+        title:  Center(child: Text(getTranslated(context, 'breeAna'), style: TextStyle(
           fontSize: 20,
           fontWeight: FontWeight.bold,
           color: Colors.white,
@@ -181,7 +182,7 @@ class _ComAnlysisInfoViewState extends State<ComAnlysisInfoView> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        const Icon(Icons.info, size: 48.0, color: Colors.blue),
+                       // const Icon(Icons.info, size: 48.0, color: Colors.blue),
                         Text(
                           widget.itemName,
                           style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
@@ -219,14 +220,14 @@ class _ComAnlysisInfoViewState extends State<ComAnlysisInfoView> {
                               items = snapshot.data ?? [] ;
 
                               return DataTable(
-                                columns: const [
+                                columns:  [
 
 
 
-                                  DataColumn(label: Text('خيارات')),
-                                  DataColumn(label: Text('الكمية')),
-                                  DataColumn(label: Text('العنصر')),
-                                  DataColumn(label: Text('كود')),
+                                  DataColumn(label: Text(getTranslated(context, 'options'))),
+                                  DataColumn(label: Text(getTranslated(context, 'quantity'))),
+                                  DataColumn(label: Text(getTranslated(context, 'Item'))),
+                                  DataColumn(label: Text(getTranslated(context, 'code'))),
                                 ],
                                 rows: items.asMap().entries.map((entry) {
                                   int index = entry.key;
@@ -303,7 +304,7 @@ class _ComAnlysisInfoViewState extends State<ComAnlysisInfoView> {
       builder: (BuildContext context) {
         SystemChannels.textInput.invokeMethod('TextInput.show');
         return AlertDialog(
-          title: Center(child: Text('اضافة عنصر للتحليل',style: TextStyle(color: ColorManager.primary),)),
+          title: Center(child: Text(getTranslated(context, 'addItemAna'),style: TextStyle(color: ColorManager.primary),)),
           content: SingleChildScrollView(
             child: Column(
               children: [
@@ -316,7 +317,7 @@ class _ComAnlysisInfoViewState extends State<ComAnlysisInfoView> {
                     },
                     icon: const Icon(Icons.keyboard_arrow_down),
                     decoration: _getDropDownDecoration(
-                        hintText: 'اختر العنصر', icon: Icons.add_chart_outlined),
+                        hintText: getTranslated(context, 'selectItem'), icon: Icons.add_chart_outlined),
                     items: dropdownData.map<DropdownMenuItem<int>>(
                           (Map<String, dynamic> item) {
                         return DropdownMenuItem<int>(
@@ -335,7 +336,7 @@ class _ComAnlysisInfoViewState extends State<ComAnlysisInfoView> {
                   keyboardType:  TextInputType.number,
                   iconData: Icons.numbers,
                   controller: qtyController,
-                  hintText: 'ادخل الكمية',
+                  hintText: getTranslated(context, 'enterquantity'),
 
                 ),
 
@@ -345,14 +346,14 @@ class _ComAnlysisInfoViewState extends State<ComAnlysisInfoView> {
           actions: <Widget>[
             TextButton(
               onPressed: () => Navigator.of(context).pop(false),
-              child: Text('الغاء'),
+              child: Text(getTranslated(context, 'cancel')),
             ),
             TextButton(
               onPressed:  (){
                 _saveitem();
                 Navigator.of(context).pop(false);
               },
-              child: Text('حفظ'),
+              child: Text(getTranslated(context, 'save')),
             ),
           ],
         );
@@ -412,7 +413,7 @@ class _ComAnlysisInfoViewState extends State<ComAnlysisInfoView> {
       builder: (BuildContext context) {
         SystemChannels.textInput.invokeMethod('TextInput.show');
         return AlertDialog(
-          title: Center(child: Text('$itemName : تعديل  القيمة',style: TextStyle(color: ColorManager.primary),)),
+          title: Center(child: Text('$itemName : ${getTranslated(context, 'editquantity')}',style: TextStyle(color: ColorManager.primary),)),
           content: SingleChildScrollView(
             child: Column(
               children: [
@@ -423,7 +424,7 @@ class _ComAnlysisInfoViewState extends State<ComAnlysisInfoView> {
                   keyboardType:  TextInputType.number,
                   iconData: Icons.numbers,
                   controller: editqtyController,
-                  hintText: 'ادخل القيمة',
+                 // hintText: 'ادخل القيمة',
 
                 ),
 
@@ -433,7 +434,7 @@ class _ComAnlysisInfoViewState extends State<ComAnlysisInfoView> {
           actions: <Widget>[
             TextButton(
               onPressed: () => Navigator.of(context).pop(false),
-              child: Text('الغاء'),
+              child: Text(getTranslated(context, 'cancel')),
             ),
             TextButton(
               onPressed:  (){
@@ -441,7 +442,7 @@ class _ComAnlysisInfoViewState extends State<ComAnlysisInfoView> {
                 print('Item qty Issssss:  $editqtyController');
                 Navigator.of(context).pop(false);
               },
-              child: Text('حفظ'),
+              child: Text(getTranslated(context, 'save')),
             ),
           ],
         );

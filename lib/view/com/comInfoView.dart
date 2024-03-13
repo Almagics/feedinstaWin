@@ -20,6 +20,7 @@ import 'package:feedinsta/view/com/comListView.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../../l10n/l10n.dart';
 import '../../model/context/dbcontext.dart';
 import '../../resources/color_manager.dart';
 import '../../resources/routes_manager.dart';
@@ -211,9 +212,9 @@ class _ComInfoViewViewState extends State<ComInfoView> {
         ),
 
         elevation: 0.0,
-        title: const Center(child: Text("تفاصيل التركيبة",
+        title:  Center(child: Text( getTranslated(context, 'FORMULAinfo'),
 
-          style: TextStyle(
+          style: const TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.bold,
             color: Colors.white,
@@ -314,7 +315,7 @@ class _ComInfoViewViewState extends State<ComInfoView> {
                                       child: Column(
                                         crossAxisAlignment: CrossAxisAlignment.center,
                                         children: [
-                                          const Icon(Icons.info, size: 48.0, color: Colors.blue),
+                                     //     const Icon(Icons.info, size: 48.0, color: Colors.blue),
                                           Text(
                                             widget.itemName,
                                             style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
@@ -339,11 +340,11 @@ class _ComInfoViewViewState extends State<ComInfoView> {
 
 
                                     children: [
-                                      Text('السعر المطلوب :${widget.reqPrice}',
+                                      Text(' ${getTranslated(context, 'reqPrice')} :${widget.reqPrice}',
                                         style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold, color: Colors.white),
                                       ),
                                       SizedBox(width: 10,),
-                                      Text('الكمية المطلوبة:${widget.reqQty}', style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold, color: Colors.white),),
+                                      Text(' ${getTranslated(context, 'indicators')}:${widget.reqQty}', style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold, color: Colors.white),),
 
                                     ],
                                   ),
@@ -356,11 +357,11 @@ class _ComInfoViewViewState extends State<ComInfoView> {
 
 
                                     children: [
-                                      Text(' السعر :${dblist[0].comTotalPrice}',
+                                      Text(' ${getTranslated(context, 'price')} :${dblist[0].comTotalPrice}',
                                         style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold, color: Colors.white),
                                       ),
                                       SizedBox(width: 10,),
-                                      Text(' الكمية:${dblist[0].totalQty}', style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold, color: Colors.white),),
+                                      Text(' ${getTranslated(context, 'quantity')}:${dblist[0].totalQty}', style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold, color: Colors.white),),
 
                                     ],
                                   ),
@@ -370,7 +371,7 @@ class _ComInfoViewViewState extends State<ComInfoView> {
 
 
                                  ExpansionTile(
-                                  title: const Center(child: Text('المؤشرات',style: TextStyle(
+                                  title:  Center(child: Text(getTranslated(context, 'indicators'),style: TextStyle(
                                     fontSize: 15,
                                     fontWeight: FontWeight.bold,
                                     color: Colors.black,
@@ -378,17 +379,17 @@ class _ComInfoViewViewState extends State<ComInfoView> {
 
                                   children: <Widget>[
                                     DataTable(
-                          columns:  const [
+                          columns:   [
 
-                          DataColumn(label: Text('الموشر')),
-                          DataColumn(label: Text('القيمة')),
+                          DataColumn(label: Text(getTranslated(context, 'indicator'))),
+                          DataColumn(label: Text(getTranslated(context, 'value'))),
 
 
                           ],
                           rows:  [
                           DataRow(
                           cells: [
-                          const DataCell(Text('طاقة/بروتين السلالة')),
+                           DataCell(Text(getTranslated(context, 'engPro'))),
                           DataCell(Text(q1)),
 
                           ],),
@@ -396,14 +397,14 @@ class _ComInfoViewViewState extends State<ComInfoView> {
 
                           DataRow(
                           cells: [
-                          const DataCell(Text('طاقة /بروتين فعلي')),
+                           DataCell(Text(getTranslated(context, 'engProexist'))),
                           DataCell(Text(q2)),
 
                           ],),
 
                           DataRow(
                           cells: [
-                          const DataCell(Text('الكتروليت السلالة')),
+                           DataCell(Text(getTranslated(context, 'elctorlite'))),
                           DataCell(Text(q3)),
 
                           ],),
@@ -411,7 +412,7 @@ class _ComInfoViewViewState extends State<ComInfoView> {
 
                           DataRow(
                           cells: [
-                          const DataCell( Text('الكترولايت فعلي')),
+                           DataCell( Text(getTranslated(context, 'electiroliteexits'))),
                           DataCell(Text(q4)),
 
                           ],),
@@ -459,7 +460,7 @@ class _ComInfoViewViewState extends State<ComInfoView> {
                       children: [
 
                          ExpansionTile(
-                          title: const Center(child: Text('التحاليل',style: TextStyle(
+                          title:  Center(child: Text(getTranslated(context, 'analysis'),style: TextStyle(
                     fontSize: 15,
                       fontWeight: FontWeight.bold,
                       color: Colors.black,
@@ -477,14 +478,14 @@ class _ComInfoViewViewState extends State<ComInfoView> {
                                   List<ReportComModel> dblist = snapshot.data ?? [] ;
 
                                   return DataTable(
-                                    columns: const [
+                                    columns:  [
 
 
 
-                                      DataColumn(label: Text('العنصر')),
-                                      DataColumn(label: Text('التحليل')),
-                                      DataColumn(label: Text('الحالي')),
-                                      DataColumn(label: Text('الحالة')),
+                                      DataColumn(label: Text(getTranslated(context, 'Item'))),
+                                      DataColumn(label: Text(getTranslated(context, 'analysis'))),
+                                      DataColumn(label: Text(getTranslated(context, 'now'))),
+                                      DataColumn(label: Text(getTranslated(context, 'status'))),
 
                                     ],
                                     rows: dblist.asMap().entries.map((entry) {
@@ -563,15 +564,15 @@ class _ComInfoViewViewState extends State<ComInfoView> {
                               items = snapshot.data ?? [] ;
 
                               return DataTable(
-                                columns: const [
+                                columns:  [
+
+                                  DataColumn(label: Text(getTranslated(context, 'options'))),
+                                  DataColumn(label: Text(getTranslated(context, 'price'))),
+                                  DataColumn(label: Text(getTranslated(context, 'quantity'))),
+                                  DataColumn(label: Text(getTranslated(context, 'Item'))),
+                                  DataColumn(label: Text(getTranslated(context, 'code'))),
 
 
-
-                                  DataColumn(label: Text('خيارات')),
-                                  DataColumn(label: Text('السعر')),
-                                  DataColumn(label: Text('الكمية')),
-                                  DataColumn(label: Text('العنصر')),
-                                  DataColumn(label: Text('كود')),
                                 ],
                                 rows: items.asMap().entries.map((entry) {
                                   int index = entry.key;
@@ -655,7 +656,7 @@ class _ComInfoViewViewState extends State<ComInfoView> {
       builder: (BuildContext context) {
         SystemChannels.textInput.invokeMethod('TextInput.show');
         return AlertDialog(
-          title: Center(child: Text('اضافة خامة للتركيبه',style: TextStyle(color: ColorManager.primary),)),
+          title: Center(child: Text(getTranslated(context, 'addRawFixture'),style: TextStyle(color: ColorManager.primary),)),
           content: SingleChildScrollView(
             child: Column(
               children: [
@@ -668,7 +669,7 @@ class _ComInfoViewViewState extends State<ComInfoView> {
                     },
                     icon: const Icon(Icons.keyboard_arrow_down),
                     decoration: _getDropDownDecoration(
-                        hintText: 'اختر الخامة', icon: Icons.add_chart_outlined),
+                        hintText: getTranslated(context, 'rawname'), icon: Icons.add_chart_outlined),
                     items: dropdownData.map<DropdownMenuItem<int>>(
                           (Map<String, dynamic> item) {
                         return DropdownMenuItem<int>(
@@ -683,9 +684,9 @@ class _ComInfoViewViewState extends State<ComInfoView> {
                       });
                     }),
 
-                const Padding(padding: EdgeInsets.all(8),
+                 Padding(padding: EdgeInsets.all(8),
 
-                  child: Text('السعر'),
+                  child: Text(getTranslated(context, 'price')),
 
 
                 ),
@@ -694,13 +695,13 @@ class _ComInfoViewViewState extends State<ComInfoView> {
                   keyboardType:  TextInputType.number,
                   iconData: Icons.numbers,
                   controller: pricController,
-                  hintText: 'ادخل السعر للكيلو',
+                //  hintText: 'ادخل السعر للكيلو',
 
                 ),
 
-                const Padding(padding: EdgeInsets.all(8),
+                 Padding(padding: EdgeInsets.all(8),
 
-                  child: Text('الكمية'),
+                  child: Text(getTranslated(context, 'quantity')),
 
 
                 ),
@@ -709,7 +710,7 @@ class _ComInfoViewViewState extends State<ComInfoView> {
                   keyboardType:  TextInputType.number,
                   iconData: Icons.numbers,
                   controller: qtyController,
-                  hintText: 'ادخل الكمية',
+                //  hintText: 'ادخل الكمية',
 
                 ),
 
@@ -719,14 +720,14 @@ class _ComInfoViewViewState extends State<ComInfoView> {
           actions: <Widget>[
             TextButton(
               onPressed: () => Navigator.of(context).pop(false),
-              child: Text('الغاء'),
+              child: Text(getTranslated(context, 'cancel')),
             ),
             TextButton(
               onPressed:  (){
                 _saveitem();
                 Navigator.of(context).pop(false);
               },
-              child: Text('حفظ'),
+              child: Text(getTranslated(context, 'save')),
             ),
           ],
         );

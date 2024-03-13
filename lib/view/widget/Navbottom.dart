@@ -12,6 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../../resources/color_manager.dart';
+import '../Profile/profile_view.dart';
 import '../home/mainview.dart';
 import '../raw_item/addItem.dart';
 
@@ -46,6 +47,11 @@ class _BottomNavBarDemoState extends State<BottomNavBarDemo> {
       case 2:
         return new GroupListView();
 
+      case 3:
+        return  WidgetsBinding.instance.addPostFrameCallback((_) {
+          Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => ProfileView()));
+        });
+
 
 
       default:
@@ -72,6 +78,7 @@ class _BottomNavBarDemoState extends State<BottomNavBarDemo> {
           Icon(Icons.home, size: 30),
           Icon(Icons.favorite_border, size: 30),
           Icon(Icons.supervised_user_circle, size: 30),
+          Icon(Icons.perm_contact_cal, size: 30),
 
 
         ],

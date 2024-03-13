@@ -167,7 +167,7 @@ class _AddRawAnlysisState extends State<AddRawAnlysis> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        const Icon(Icons.info, size: 48.0, color: Colors.blue),
+                       // const Icon(Icons.info, size: 48.0, color: Colors.blue),
                         Text(
                           widget.itemName,
                           style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),

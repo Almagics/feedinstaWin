@@ -12,6 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 
+import '../../l10n/l10n.dart';
 import '../../resources/color_manager.dart';
 import '../../resources/routes_manager.dart';
 
@@ -69,7 +70,7 @@ class _GroupComAnalysisListViewState extends State<GroupComAnalysisListView> {
         ),
 
         elevation: 0.0,
-        title: const Center(child: Text("دليل  السلالات", style: TextStyle(
+        title:  Center(child: Text(getTranslated(context, 'BreeGuide'), style: TextStyle(
           fontSize: 20,
           fontWeight: FontWeight.bold,
           color: Colors.white,

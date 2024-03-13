@@ -152,296 +152,293 @@ class _EditComViewState extends State<EditComView> {
 
   @override
   Widget build(BuildContext context) {
-    return Directionality(
-      textDirection: TextDirection.rtl,
-      child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.orange,
-          leading: IconButton(
-            icon: Icon(Icons.arrow_back,color: ColorManager.white,),
-            onPressed: () {
-              Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                      builder: (ctx) => ComListView(groupId:widget.groupId)));
-            },
-          ),
-          systemOverlayStyle: SystemUiOverlayStyle(
-              statusBarColor: ColorManager.darkGrey,
-              statusBarBrightness: Brightness.light
-          ),
-
-          elevation: 0.0,
-          title: const Center(child: Text("تعديل بيانات تركيبة",
-
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-              color: Colors.white,
-            ),
-
-
-          )),
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.orange,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back,color: ColorManager.white,),
+          onPressed: () {
+            Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                    builder: (ctx) => ComListView(groupId:widget.groupId)));
+          },
         ),
-        body: SingleChildScrollView(
-            child: Form(
-              key: _formKey,
-              child:  FutureBuilder(
-                future: getinfo(),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    // Display a loading indicator while waiting for the future to complete
-                    return CircularProgressIndicator();
-                  } else if (snapshot.hasError) {
-                    // Display an error message if the future encounters an error
-                    return Text('Error: ${snapshot.error}');
-                  } else {
+        systemOverlayStyle: SystemUiOverlayStyle(
+            statusBarColor: ColorManager.darkGrey,
+            statusBarBrightness: Brightness.light
+        ),
+
+        elevation: 0.0,
+        title: const Center(child: Text("تعديل بيانات تركيبة",
+
+          style: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+          ),
 
 
-                    comNameController = TextEditingController(text: snapshot.data!.com_name);
-                    remarksController = TextEditingController(text: snapshot.data!.com_remarks.toString());
-                    groupController = TextEditingController(text: snapshot.data!.group_com_id.toString());
-                    qtyController = TextEditingController(text: snapshot.data!.com_qty.toString());
-                    amountController = TextEditingController(text: snapshot.data!.total_amount.toString());
-                    anlyisidController = TextEditingController(text: snapshot.data!.com_ana_id.toString());
+        )),
+      ),
+      body: SingleChildScrollView(
+          child: Form(
+            key: _formKey,
+            child:  FutureBuilder(
+              future: getinfo(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  // Display a loading indicator while waiting for the future to complete
+                  return CircularProgressIndicator();
+                } else if (snapshot.hasError) {
+                  // Display an error message if the future encounters an error
+                  return Text('Error: ${snapshot.error}');
+                } else {
+
+
+                  comNameController = TextEditingController(text: snapshot.data!.com_name);
+                  remarksController = TextEditingController(text: snapshot.data!.com_remarks.toString());
+                  groupController = TextEditingController(text: snapshot.data!.group_com_id.toString());
+                  qtyController = TextEditingController(text: snapshot.data!.com_qty.toString());
+                  amountController = TextEditingController(text: snapshot.data!.total_amount.toString());
+                  anlyisidController = TextEditingController(text: snapshot.data!.com_ana_id.toString());
 
 
 
 
 
-                    selectedId = snapshot.data!.com_ana_id!;
-                    selectedIdGroup = snapshot.data!.group_com_id!;
+                  selectedId = snapshot.data!.com_ana_id!;
+                  selectedIdGroup = snapshot.data!.group_com_id!;
 
-                    // Display the data once the future is complete
-                    return  Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const SafeArea(child: SizedBox.shrink()),
-                        Container(
-                          margin: EdgeInsets.all(AppPadding.p8),
-                          child: const Padding(padding: EdgeInsets.all(AppPadding.p8),
-                            child: Center(child: Text('تعديل بيانات تركيبة')),
+                  // Display the data once the future is complete
+                  return  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SafeArea(child: SizedBox.shrink()),
+                      Container(
+                        margin: EdgeInsets.all(AppPadding.p8),
+                        child: const Padding(padding: EdgeInsets.all(AppPadding.p8),
+                          child: Center(child: Text('تعديل بيانات تركيبة')),
 
 
-                          ),
                         ),
+                      ),
 
 
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            "اسم التركيبه",
-                            style: Theme
-                                .of(context)
-                                .textTheme
-                                .headlineMedium,
-                          ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          "اسم التركيبه",
+                          style: Theme
+                              .of(context)
+                              .textTheme
+                              .headlineMedium,
                         ),
+                      ),
 
-                        Padding(padding: EdgeInsets.all(AppPadding.p8),
-                            child: AppTextFormFiled(
-
-                              controller: comNameController,
-                              hintText: "ادخل اسم التركيبة",
-                            )
-                        ),
-
-
-
-
-
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            "المجموعة ",
-                            style: Theme
-                                .of(context)
-                                .textTheme
-                                .headlineMedium,
-                          ),
-                        ),
-
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: DropdownButtonFormField(
-                              validator: (value) {
-                                if (value == null) {
-                                  return 'Required*';
-                                }
-                              },
-                              icon: const Icon(Icons.keyboard_arrow_down),
-                              decoration: _getDropDownDecorationGroup(
-                                  hintText: 'اختر مجموعة ', icon: Icons.add_chart_outlined),
-                              value: selectedIdGroup,
-                              items: dropdownDataGroup.map<DropdownMenuItem<int>>(
-                                    (Map<String, dynamic> item) {
-                                  return DropdownMenuItem<int>(
-                                    value: item['group_com_id'] as int,
-                                    child: Text(item['group_com_name'] as String),
-                                  );
-                                },
-                              ).toList(),
-                              onChanged: (value) {
-                                setState(() {
-                                  groupController.text = value.toString()!;
-                                  selectedIdGroup = value ?? 0;
-                                });
-                              }),
-                        ),
-
-
-
-
-
-
-
-
-
-
-
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            "التكلفة",
-                            style: Theme
-                                .of(context)
-                                .textTheme
-                                .headlineMedium,
-                          ),
-                        ),
-
-                        Padding(padding: EdgeInsets.all(AppPadding.p8),
-                            child: AppTextFormFiled(
-
-                              controller: amountController,
-                              hintText: "ادخل  التكلفة",
-                              keyboardType: TextInputType.number,
-
-                            )
-                        ),
-
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            "تحليل السلالة",
-                            style: Theme
-                                .of(context)
-                                .textTheme
-                                .headlineMedium,
-                          ),
-                        ),
-
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: DropdownButtonFormField(
-                              validator: (value) {
-                                if (value == null) {
-                                  return 'Required*';
-                                }
-                              },
-                              icon: const Icon(Icons.keyboard_arrow_down),
-                              decoration: _getDropDownDecoration(
-                                  hintText: 'اختر تحليل السلالة', icon: Icons.add_chart_outlined),
-                              value: selectedId,
-                              items: dropdownData.map<DropdownMenuItem<int>>(
-                                    (Map<String, dynamic> item) {
-                                  return DropdownMenuItem<int>(
-                                    value: item['com_ana_id'] as int,
-                                    child: Text(item['com_ana_name'] as String),
-                                  );
-                                },
-                              ).toList(),
-                              onChanged: (value) {
-                                setState(() {
-                                  anlyisidController.text = value.toString()!;
-                                  selectedId = value ?? 0;
-                                });
-                              }),
-                        ),
-
-
-
-
-
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            "الكمية",
-                            style: Theme
-                                .of(context)
-                                .textTheme
-                                .headlineMedium,
-                          ),
-                        ),
-
-                        Padding(padding: EdgeInsets.all(AppPadding.p8),
-                            child: AppTextFormFiled(
-
-                              controller: qtyController,
-                              hintText: "ادخل  الكمية",
-                              keyboardType: TextInputType.number,
-
-                            )
-                        ),
-
-
-
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            "ملاحظات",
-                            style: Theme
-                                .of(context)
-                                .textTheme
-                                .headlineMedium,
-                          ),
-                        ),
-
-                        Padding(padding: EdgeInsets.all(AppPadding.p8),
+                      Padding(padding: EdgeInsets.all(AppPadding.p8),
                           child: AppTextFormFiled(
 
-                            controller: remarksController,
-                            hintText: "ادخل الملاحظات",
-                          ),),
+                            controller: comNameController,
+                            hintText: "ادخل اسم التركيبة",
+                          )
+                      ),
 
 
-                        const SizedBox(height: 20,),
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(3, 0, 3, 0),
-                          child: Center(
-                            child: SizedBox(width: 380, height: 50,
-                              child: ElevatedButton(
-                                onPressed: () {
-                                  //pageController.animateToPage(getNextIndex, duration: const Duration(microseconds: AppConstants.splashDelay), curve: Curves.bounceInOut);
-                                  _saveitem();
-                                },
 
 
-                                style: Theme
-                                    .of(context)
-                                    .elevatedButtonTheme
-                                    .style,
-                                child: const Text("حفظ"),
 
-                              ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          "المجموعة ",
+                          style: Theme
+                              .of(context)
+                              .textTheme
+                              .headlineMedium,
+                        ),
+                      ),
+
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: DropdownButtonFormField(
+                            validator: (value) {
+                              if (value == null) {
+                                return 'Required*';
+                              }
+                            },
+                            icon: const Icon(Icons.keyboard_arrow_down),
+                            decoration: _getDropDownDecorationGroup(
+                                hintText: 'اختر مجموعة ', icon: Icons.add_chart_outlined),
+                            value: selectedIdGroup,
+                            items: dropdownDataGroup.map<DropdownMenuItem<int>>(
+                                  (Map<String, dynamic> item) {
+                                return DropdownMenuItem<int>(
+                                  value: item['group_com_id'] as int,
+                                  child: Text(item['group_com_name'] as String),
+                                );
+                              },
+                            ).toList(),
+                            onChanged: (value) {
+                              setState(() {
+                                groupController.text = value.toString()!;
+                                selectedIdGroup = value ?? 0;
+                              });
+                            }),
+                      ),
+
+
+
+
+
+
+
+
+
+
+
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          "التكلفة",
+                          style: Theme
+                              .of(context)
+                              .textTheme
+                              .headlineMedium,
+                        ),
+                      ),
+
+                      Padding(padding: EdgeInsets.all(AppPadding.p8),
+                          child: AppTextFormFiled(
+
+                            controller: amountController,
+                            hintText: "ادخل  التكلفة",
+                            keyboardType: TextInputType.number,
+
+                          )
+                      ),
+
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          "تحليل السلالة",
+                          style: Theme
+                              .of(context)
+                              .textTheme
+                              .headlineMedium,
+                        ),
+                      ),
+
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: DropdownButtonFormField(
+                            validator: (value) {
+                              if (value == null) {
+                                return 'Required*';
+                              }
+                            },
+                            icon: const Icon(Icons.keyboard_arrow_down),
+                            decoration: _getDropDownDecoration(
+                                hintText: 'اختر تحليل السلالة', icon: Icons.add_chart_outlined),
+                            value: selectedId,
+                            items: dropdownData.map<DropdownMenuItem<int>>(
+                                  (Map<String, dynamic> item) {
+                                return DropdownMenuItem<int>(
+                                  value: item['com_ana_id'] as int,
+                                  child: Text(item['com_ana_name'] as String),
+                                );
+                              },
+                            ).toList(),
+                            onChanged: (value) {
+                              setState(() {
+                                anlyisidController.text = value.toString()!;
+                                selectedId = value ?? 0;
+                              });
+                            }),
+                      ),
+
+
+
+
+
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          "الكمية",
+                          style: Theme
+                              .of(context)
+                              .textTheme
+                              .headlineMedium,
+                        ),
+                      ),
+
+                      Padding(padding: EdgeInsets.all(AppPadding.p8),
+                          child: AppTextFormFiled(
+
+                            controller: qtyController,
+                            hintText: "ادخل  الكمية",
+                            keyboardType: TextInputType.number,
+
+                          )
+                      ),
+
+
+
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          "ملاحظات",
+                          style: Theme
+                              .of(context)
+                              .textTheme
+                              .headlineMedium,
+                        ),
+                      ),
+
+                      Padding(padding: EdgeInsets.all(AppPadding.p8),
+                        child: AppTextFormFiled(
+
+                          controller: remarksController,
+                          hintText: "ادخل الملاحظات",
+                        ),),
+
+
+                      const SizedBox(height: 20,),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(3, 0, 3, 0),
+                        child: Center(
+                          child: SizedBox(width: 380, height: 50,
+                            child: ElevatedButton(
+                              onPressed: () {
+                                //pageController.animateToPage(getNextIndex, duration: const Duration(microseconds: AppConstants.splashDelay), curve: Curves.bounceInOut);
+                                _saveitem();
+                              },
+
+
+                              style: Theme
+                                  .of(context)
+                                  .elevatedButtonTheme
+                                  .style,
+                              child: const Text("حفظ"),
+
                             ),
                           ),
                         ),
-                        SizedBox(height: 10,)
+                      ),
+                      SizedBox(height: 10,)
 
-                      ],
-                    );
-
-
-                  }
-                },
-              )
+                    ],
+                  );
 
 
-
-
+                }
+              },
             )
-        ),
+
+
+
+
+          )
       ),
     );
   }

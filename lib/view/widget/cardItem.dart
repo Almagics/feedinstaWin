@@ -21,7 +21,7 @@ class CardWithImageAndText extends StatelessWidget {
       onTap: onPressed,
       child: Card(
         elevation: 4.0,
-        margin: EdgeInsets.all(16.0),
+        margin: EdgeInsets.all(8.0),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12.0),
         ),
@@ -43,12 +43,12 @@ class CardWithImageAndText extends StatelessWidget {
                 children: <Widget>[
                   Padding(
 
-                    padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.all(4.0),
                     child: Center(
                       child: Text(name ?? '',
 
                         style: const TextStyle(
-                          fontSize: 20,
+                          fontSize: 25,
                           fontWeight: FontWeight.bold,
                           color: Colors.white,
 
@@ -59,7 +59,7 @@ class CardWithImageAndText extends StatelessWidget {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.all(3.0),
                     child: Row(
                       children: [
                         Text(desc ??  ''),
