@@ -10,6 +10,7 @@ import 'package:feedinsta/model/groupComModel.dart';
 import 'package:feedinsta/model/groupComanalysisModel.dart';
 import 'package:feedinsta/model/groupRawModel.dart';
 import 'package:feedinsta/model/itemmodel.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../service/ComAnlysisService.dart';
 import '../../service/ComService.dart';
@@ -131,6 +132,41 @@ class FillDatabase{
    await _ComBodyService.insertData(ComBodyModel(ram_item_id: 2, com_body_qty: 50, total_price: 240)) ;
 
   }
+
+
+
+
+  Future<void> insertElements() async {
+
+   var _prefs = await SharedPreferences.getInstance();
+
+   var check = _prefs.getString('elmentdemo');
+
+   if(check == null){
+
+    await _elementService.insertData(ElementModel(element_name: 'Energy/ME'));
+    await _elementService.insertData(ElementModel(element_name: 'Protein'));
+    await _elementService.insertData(ElementModel(element_name: 'Na'));
+    await  _elementService.insertData(ElementModel(element_name: 'K'));
+    await _elementService.insertData(ElementModel(element_name: 'Cl'));
+
+    await _prefs.setString('elmentdemo', 'true'); // Saving the value
+
+   }
+
+   //add elements
+
+
+
+
+
+
+
+
+  }
+
+
+
 }
   
   

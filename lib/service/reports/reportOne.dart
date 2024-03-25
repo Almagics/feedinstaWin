@@ -11,7 +11,7 @@ import '../analysisRawService.dart';
 import '../comAnlysisBodyService.dart';
 import '../comBodyService.dart';
 
-class ReportOne{
+class ReportOne {
 
   final Dbcon database = Dbcon();
   final String tbl = "composition_tbl";
@@ -63,41 +63,33 @@ JOIN
 
     List<ReportComModel> result2 = [];
 
-     var bodyanaNo = await _com.getItemAnaById(comId);
-
+    var bodyanaNo = await _com.getItemAnaById(comId);
 
 
     List<ComBodyModel> comntbody = await _body.getAllDataById(comId);
 
     print('Com Count :: ${comntbody.length}');
 
-    if(comntbody.length > 0){
-
+    if (comntbody.length > 0) {
       //result = await db.rawQuery(query);
 
 
-      result = await _anaBody.getAllDataById(bodyanaNo??0);
-
+      result = await _anaBody.getAllDataById(bodyanaNo ?? 0);
 
 
       print('Comhead Count :: ${result.length}');
 
       // Map the query result to a list of CompositionResult objects
-     for(var item in result){
+      for (var item in result) {
+        compositionResults.add(ReportComModel(
+            comId: comId,
+            comName: '',
+            elementId: item.element_id ?? 0,
+            elementName: item.element_name ?? '',
+            sumAnaBodyQty: item.ana_body_qty ?? 0
 
-       compositionResults.add(ReportComModel(
-           comId: comId,
-           comName: '',
-           elementId: item.element_id ?? 0,
-           elementName: item.element_name ?? '',
-           sumAnaBodyQty: item.ana_body_qty ?? 0
-
-       ));
-
-
-
-     }
-
+        ));
+      }
     }
 
     // Execute the query and get the result
@@ -110,7 +102,6 @@ JOIN
     Map<String, ReportComModel> groupedByElement = {};
 
 
-
     List<ComBodyModel> bodylist = await _body.getAllDataById(comId ?? 0);
 
     var totalprice = await _body.calculateTotalPrice(bodylist);
@@ -121,105 +112,84 @@ JOIN
     print('total Price::$totalprice');
 
 
-
-
-
     for (var report in compositionResults) {
-
       double itemAnaQty = 0;
 
 
+      // List<ComBodyModel> combody = await _body.getAllDataById(report.comId);
+      for (var item in bodylist) {
+        double? elementvalue = await _itembody.getItemqtyById(
+            item.ram_item_id ?? 0, report.elementId ?? 0);
 
-       // List<ComBodyModel> combody = await _body.getAllDataById(report.comId);
-        for(var item in bodylist){
-
-         double? elementvalue =  await _itembody.getItemqtyById(item.ram_item_id ?? 0, report.elementId ?? 0);
-
-         print('item name : ${item.item_name} value:: $elementvalue comQty::${item.com_body_qty}');
+        print(
+            'item name : ${item.item_name} value:: $elementvalue comQty::${item
+                .com_body_qty}');
 
 
-
-
-          itemAnaQty =(((elementvalue ??0) * (item.com_body_qty??0)) + itemAnaQty );
-      print('valueeee:$itemAnaQty');
-        }
+        itemAnaQty =
+        (((elementvalue ?? 0) * (item.com_body_qty ?? 0)) + itemAnaQty);
+        print('valueeee:$itemAnaQty');
+      }
 
       print('comIdddd:${report.comId}');
 
 
-        itemAnaQty = itemAnaQty /1000;
+      itemAnaQty = itemAnaQty / 1000;
 
-        String status;
-        double bodyqty =  report.sumAnaBodyQty;
-        // double itemqty = groupedByElement[report.elementName]!.sumElementItem + (report.sumElementItem);
-        if (bodyqty > (itemAnaQty??0)) {
-          status = 'Lower';
-        } else if (bodyqty < (itemAnaQty??0)) {
-          status = 'Higher';
-        } else {
-          status = 'Good';
-        }
-
-
-        var model = ReportComModel(
-          comId: report.comId,
-          comName: report.comName,
-          comTotalPrice: totalprice,
-          totalQty: totalqty,
-          elementId: report.elementId,
-          elementName: report.elementName,
-          sumAnaBodyQty: report.sumAnaBodyQty,
-          sumElementItem:(itemAnaQty??0) ,
-          status: status,
-          // item_id: report.item_id,
-          // com_ana_id: report.com_ana_id
-        );
+      String status;
+      double bodyqty = report.sumAnaBodyQty;
+      // double itemqty = groupedByElement[report.elementName]!.sumElementItem + (report.sumElementItem);
+      if (bodyqty > (itemAnaQty ?? 0)) {
+        status = 'Lower';
+      } else if (bodyqty < (itemAnaQty ?? 0)) {
+        status = 'Higher';
+      } else {
+        status = 'Good';
+      }
 
 
-        result2.add(model);
+      var model = ReportComModel(
+        comId: report.comId,
+        comName: report.comName,
+        comTotalPrice: totalprice,
+        totalQty: totalqty,
+        elementId: report.elementId,
+        elementName: report.elementName,
+        sumAnaBodyQty: report.sumAnaBodyQty,
+        sumElementItem: (itemAnaQty ?? 0),
+        status: status,
+        // item_id: report.item_id,
+        // com_ana_id: report.com_ana_id
+      );
 
 
-
-
+      result2.add(model);
 
 
       //  double? anaBody = await _anaBody.getItemqtyById(report.com_ana_id ??0, report.elementId ?? 0);
 
-        // If the elementName already exists in the map, update the numeric values.
-        groupedByElement[report.elementName ?? ''] = ReportComModel(
-            comId: report.comId,
-            comName: report.comName,
-            comTotalPrice: totalprice,
-            totalQty: totalqty,
-            elementId: report.elementId,
-            elementName: report.elementName,
-            sumAnaBodyQty: report.sumAnaBodyQty,
-            sumElementItem:(itemAnaQty??0) ,
-            status: status,
-           // item_id: report.item_id,
-           // com_ana_id: report.com_ana_id
-        );
-
+      // If the elementName already exists in the map, update the numeric values.
+      groupedByElement[report.elementName ?? ''] = ReportComModel(
+        comId: report.comId,
+        comName: report.comName,
+        comTotalPrice: totalprice,
+        totalQty: totalqty,
+        elementId: report.elementId,
+        elementName: report.elementName,
+        sumAnaBodyQty: report.sumAnaBodyQty,
+        sumElementItem: (itemAnaQty ?? 0),
+        status: status,
+        // item_id: report.item_id,
+        // com_ana_id: report.com_ana_id
+      );
     }
 
     // Convert the map values back to a list.
-   //  result2 = groupedByElement.values.toList();
-
-
-
-
-
-
-
+    //  result2 = groupedByElement.values.toList();
 
 
     return result2;
   }
-
-
-
-
-
 
 
 }

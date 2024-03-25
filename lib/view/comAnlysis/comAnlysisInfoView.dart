@@ -227,7 +227,7 @@ class _ComAnlysisInfoViewState extends State<ComAnlysisInfoView> {
                                   DataColumn(label: Text(getTranslated(context, 'options'))),
                                   DataColumn(label: Text(getTranslated(context, 'quantity'))),
                                   DataColumn(label: Text(getTranslated(context, 'Item'))),
-                                  DataColumn(label: Text(getTranslated(context, 'code'))),
+                              //    DataColumn(label: Text(getTranslated(context, 'code'))),
                                 ],
                                 rows: items.asMap().entries.map((entry) {
                                   int index = entry.key;
@@ -263,7 +263,7 @@ class _ComAnlysisInfoViewState extends State<ComAnlysisInfoView> {
                                       DataCell(Text(model.element_name.toString())),
 
 
-                                      DataCell(Text(model.element_id.toString())),
+                                    //  DataCell(Text(model.element_id.toString())),
 
 
 

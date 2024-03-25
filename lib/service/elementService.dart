@@ -4,13 +4,14 @@
 
 
 
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sqflite/sqflite.dart';
 
 import '../model/context/dbcontext.dart';
 import '../model/elementModel.dart';
 import '../model/itemmodel.dart';
 
-class ElementService{
+class ElementService {
   final Dbcon database = Dbcon();
   final String tbl = "analysis_element_tbl";
 
@@ -26,8 +27,9 @@ class ElementService{
     final db = await database.initDatabase();
 
     List<Map<String, dynamic>> dbList = await db.query(tbl);
-    List<ElementModel> list = dbList.map((map) => ElementModel.fromMap(map)).toList();
-    return  list;
+    List<ElementModel> list = dbList.map((map) => ElementModel.fromMap(map))
+        .toList();
+    return list;
   }
 
 
@@ -39,15 +41,7 @@ class ElementService{
       where: 'element_id = ?',
       whereArgs: [id],
     );
-
-
-
-
-
-
-
   }
-
 
 
   Future<List<Map<String, dynamic>>> getDropdownData() async {
@@ -56,14 +50,11 @@ class ElementService{
   }
 
 
-
-
-
-
-
   Future<String?> getItemNameById(int id) async {
     final db = await database.initDatabase();
-    var result = await db.query(tbl, columns: ['element_name'], where: 'element_id = ?', whereArgs: [id]);
+    var result = await db.query(tbl, columns: ['element_name'],
+        where: 'element_id = ?',
+        whereArgs: [id]);
 
     if (result.isNotEmpty) {
       return result.first['element_name'] as String?;
@@ -78,7 +69,8 @@ class ElementService{
 
     int rowsAffected = await db.update(
       tbl,
-      updatedItem.toMap(), // Assuming toMap() is a method in ItemModel to convert it to a Map.
+      updatedItem.toMap(),
+      // Assuming toMap() is a method in ItemModel to convert it to a Map.
       where: 'element_id = ?',
       whereArgs: [updatedItem.element_id],
     );
@@ -95,11 +87,13 @@ class ElementService{
 
 
   Future<ElementModel> getItemById(int id) async {
-
     ElementModel model = ElementModel(element_id: 0, element_name: '');
     final db = await database.initDatabase();
 
-    List<Map<String, dynamic>> dbList = await db.query(tbl, columns: ['element_id', 'element_name','element_remarks'], where: 'element_id = ?', whereArgs: [id]);
+    List<Map<String, dynamic>> dbList = await db.query(
+        tbl, columns: ['element_id', 'element_name', 'element_remarks'],
+        where: 'element_id = ?',
+        whereArgs: [id]);
 
     if (dbList.isEmpty) {
       // Handle the case where the item with the specified ID is not found
@@ -109,9 +103,7 @@ class ElementService{
     model = ElementModel.fromMap(dbList.first);
     print('iteeeem : ${model.element_id}');
     return model;
-
-
-}
+  }
 
 
 }

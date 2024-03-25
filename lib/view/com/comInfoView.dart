@@ -233,7 +233,7 @@ class _ComInfoViewViewState extends State<ComInfoView> {
 
               Container(
                 width: MediaQuery.of(context).size.width ,
-                margin: EdgeInsets.all(8),
+                margin: EdgeInsets.all(0),
                 color: ColorManager.grey,
                 child: Card(
                   elevation: 5.0,
@@ -296,10 +296,23 @@ class _ComInfoViewViewState extends State<ComInfoView> {
                           } else  {
 
 
-                             q1 = (dblist[0].sumAnaBodyQty /dblist[1].sumAnaBodyQty).toStringAsFixed(2) ;
+
+
+
+                            double cl = dblist.where((item) => item.elementName == 'Cl').fold(0, (prev, item) => prev + (item.sumElementItem ?? 0) );
+                            double k = dblist.where((item) => item.elementName == 'K').fold(0, (prev, item) => prev + (item.sumElementItem ?? 0));
+                            double na = dblist.where((item) => item.elementName == 'Na').fold(0, (prev, item) => prev + (item.sumElementItem ?? 0));
+
+                            double cl2 = dblist.where((item) => item.elementName == 'Cl').fold(0, (prev, item) => prev + item.sumAnaBodyQty);
+                            double k2 = dblist.where((item) => item.elementName == 'K').fold(0, (prev, item) => prev + item.sumAnaBodyQty);
+                            double na2 = dblist.where((item) => item.elementName == 'Na').fold(0, (prev, item) => prev + item.sumAnaBodyQty);
+
+
+
+                            q1 = (dblist[0].sumAnaBodyQty /dblist[1].sumAnaBodyQty).toStringAsFixed(2) ;
                              q2 = ((dblist[0].sumElementItem ??0) /(dblist[1].sumElementItem ??0)).toStringAsFixed(2) ;
-                             q3 =  ((2/23*10000)+(4/39*10000)+(5/35.5*10000)).toStringAsFixed(2) ;
-                             q4 = ((3/23*10000)+(4/39*10000)+(5/35.5*10000)).toStringAsFixed(2) ;
+                             q3 =  ((na/23*10000)+(k/39*10000)+(cl/35.5*10000)).toStringAsFixed(2) ;
+                             q4 = ((na2/23*10000)+(k2/39*10000)+(cl2/35.5*10000)).toStringAsFixed(2) ;
 
                             return Column(
                               children: [
@@ -335,16 +348,16 @@ class _ComInfoViewViewState extends State<ComInfoView> {
                                 Container(
                                   margin: EdgeInsets.all(8),
                                   color: Colors.green,
-                                  child: Row(
+                                  child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
 
 
                                     children: [
                                       Text(' ${getTranslated(context, 'reqPrice')} :${widget.reqPrice}',
-                                        style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold, color: Colors.white),
+                                        style: TextStyle(fontSize: 13.0, fontWeight: FontWeight.bold, color: Colors.white),
                                       ),
                                       SizedBox(width: 10,),
-                                      Text(' ${getTranslated(context, 'reqquantity')}:${widget.reqQty}', style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold, color: Colors.white),),
+                                      Text(' ${getTranslated(context, 'reqquantity')}:${widget.reqQty}', style: TextStyle(fontSize: 13.0, fontWeight: FontWeight.bold, color: Colors.white),),
 
                                     ],
                                   ),
@@ -449,7 +462,7 @@ class _ComInfoViewViewState extends State<ComInfoView> {
 
               Container(
                 width: MediaQuery.of(context).size.width ,
-                margin: EdgeInsets.all(8),
+                margin: EdgeInsets.only(top: 2,bottom: 2),
                 color: ColorManager.grey,
                 child: Card(
                   elevation: 5.0,
@@ -541,7 +554,7 @@ class _ComInfoViewViewState extends State<ComInfoView> {
 
               Container(
                 width: MediaQuery.of(context).size.width ,
-                margin: EdgeInsets.all(8),
+                margin: EdgeInsets.only(top: 2,bottom: 2),
                 color: ColorManager.grey,
                 child: Card(
                   elevation: 5.0,

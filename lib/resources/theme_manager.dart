@@ -57,8 +57,7 @@ splashColor: ColorManager.lightPrimary,
 elevatedButtonTheme: ElevatedButtonThemeData(
 
   style: ElevatedButton.styleFrom(
-    textStyle: getRegularStyle(fontSize:FontSize.s15,color: ColorManager.white),
-    primary: ColorManager.primary,
+    textStyle: getRegularStyle(fontSize:FontSize.s15,color: ColorManager.white), backgroundColor: ColorManager.primary,
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(AppSize.s12),
 

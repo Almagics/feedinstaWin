@@ -8,6 +8,7 @@ import 'package:flutter/services.dart';
 
 import '../../l10n/l10n.dart';
 import '../../model/context/dbcontext.dart';
+import '../../model/context/fillDatabase.dart';
 import '../../resources/color_manager.dart';
 import '../../resources/routes_manager.dart';
 import '../../service/itemService.dart';
@@ -27,7 +28,7 @@ class ElementListView extends StatefulWidget {
 
 class _ElementListViewState extends State<ElementListView> {
   final ElementService db = ElementService();
-
+  final FillDatabase fillDb = FillDatabase();
 
   final List<ItemModel> items = [
 
@@ -35,6 +36,13 @@ class _ElementListViewState extends State<ElementListView> {
   ];
 
 
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    fillDb.insertElements();
+  }
 
 
 
