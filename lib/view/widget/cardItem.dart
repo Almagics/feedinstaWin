@@ -31,12 +31,7 @@ class CardWithImageAndText extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               // Image at the top of the card, stretched to fill
-               Column(
-                children: [
 
-                  iconlist
-                ],
-              ),
 
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -76,7 +71,12 @@ class CardWithImageAndText extends StatelessWidget {
               ),
 
 
+              Column(
+                children: [
 
+                  iconlist
+                ],
+              ),
               // Text at the bottom of the card, centered with shadow
 
             ],

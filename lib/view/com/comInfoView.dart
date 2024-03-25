@@ -344,7 +344,7 @@ class _ComInfoViewViewState extends State<ComInfoView> {
                                         style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold, color: Colors.white),
                                       ),
                                       SizedBox(width: 10,),
-                                      Text(' ${getTranslated(context, 'indicators')}:${widget.reqQty}', style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold, color: Colors.white),),
+                                      Text(' ${getTranslated(context, 'reqquantity')}:${widget.reqQty}', style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold, color: Colors.white),),
 
                                     ],
                                   ),
@@ -565,12 +565,15 @@ class _ComInfoViewViewState extends State<ComInfoView> {
 
                               return DataTable(
                                 columns:  [
+                                  DataColumn(label: Padding(
+                                    padding: const EdgeInsets.only(right: 1,left: 1),
+                                    child: Text(getTranslated(context, 'Item')),
+                                  )),
 
-                                  DataColumn(label: Text(getTranslated(context, 'options'))),
                                   DataColumn(label: Text(getTranslated(context, 'price'))),
                                   DataColumn(label: Text(getTranslated(context, 'quantity'))),
-                                  DataColumn(label: Text(getTranslated(context, 'Item'))),
-                                  DataColumn(label: Text(getTranslated(context, 'code'))),
+                                  DataColumn(label: Text(getTranslated(context, 'options'))),
+                                 // DataColumn(label: Text(getTranslated(context, 'code'))),
 
 
                                 ],
@@ -581,6 +584,11 @@ class _ComInfoViewViewState extends State<ComInfoView> {
 
                                   return DataRow(
                                     cells: [
+
+                                      DataCell(Text(model.item_name.toString())),
+
+                                      DataCell(Text(model.total_price.toString())),
+                                      DataCell(Text(model.com_body_qty.toString())),
                                       DataCell(Row(
                                         children: [
                                           GestureDetector(
@@ -599,22 +607,16 @@ class _ComInfoViewViewState extends State<ComInfoView> {
                                             child: Icon(Icons.edit,color: ColorManager.error,),
                                             onTap: () async{
 
-                                           await   _showEditDialog(model.com_body_id ?? 0,model.com_body_qty ?? 0,model.item_name ?? '',model.total_price ?? 0);
+                                              await   _showEditDialog(model.com_body_id ?? 0,model.com_body_qty ?? 0,model.item_name ?? '',model.total_price ?? 0);
                                               print('body id${model.com_body_id}');
                                             },
 
                                           ),
                                         ],
-                                      ),
+                                      ),),
 
 
-                                      ),
-                                      DataCell(Text(model.total_price.toString())),
-                                      DataCell(Text(model.com_body_qty.toString())),
-                                      DataCell(Text(model.item_name.toString())),
-
-
-                                      DataCell(Text(model.ram_item_id.toString())),
+                                     // DataCell(Text(model.ram_item_id.toString())),
 
 
 
