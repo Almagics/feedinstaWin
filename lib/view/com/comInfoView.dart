@@ -308,11 +308,19 @@ class _ComInfoViewViewState extends State<ComInfoView> {
                             double na2 = dblist.where((item) => item.elementName == 'Na').fold(0, (prev, item) => prev + item.sumAnaBodyQty);
 
 
+                            print('this is na ${na2}');
+
+                            print('this is k ${k2}');
+
+                            print('this is k ${cl2}');
 
                             q1 = (dblist[0].sumAnaBodyQty /dblist[1].sumAnaBodyQty).toStringAsFixed(2) ;
                              q2 = ((dblist[0].sumElementItem ??0) /(dblist[1].sumElementItem ??0)).toStringAsFixed(2) ;
-                             q3 =  ((na/23*10000)+(k/39*10000)+(cl/35.5*10000)).toStringAsFixed(2) ;
-                             q4 = ((na2/23*10000)+(k2/39*10000)+(cl2/35.5*10000)).toStringAsFixed(2) ;
+                             q3 =  ((na/23*10000)+(k/39*10000)-(cl/35.5*10000)).toStringAsFixed(2) ;
+                             q4 = ((na2/23*10000)+(k2/39*10000)-(cl2/35.5*10000)).toStringAsFixed(2) ;
+
+
+                            print('this is exstt ${q4}');
 
                             return Column(
                               children: [
@@ -394,39 +402,39 @@ class _ComInfoViewViewState extends State<ComInfoView> {
                                     DataTable(
                           columns:   [
 
-                          DataColumn(label: Text(getTranslated(context, 'indicator'))),
-                          DataColumn(label: Text(getTranslated(context, 'value'))),
+                          DataColumn(label: Text(getTranslated(context, 'indicator'),textAlign: TextAlign.center)),
+                          DataColumn(label: Text(getTranslated(context, 'value'),textAlign: TextAlign.center)),
 
 
                           ],
                           rows:  [
                           DataRow(
                           cells: [
-                           DataCell(Text(getTranslated(context, 'engPro'))),
-                          DataCell(Text(q1)),
+                           DataCell(Text(getTranslated(context, 'engPro'),textAlign: TextAlign.center)),
+                          DataCell(Text(q1,textAlign: TextAlign.center)),
 
                           ],),
 
 
                           DataRow(
                           cells: [
-                           DataCell(Text(getTranslated(context, 'engProexist'))),
+                           DataCell(Text(getTranslated(context, 'engProexist'),textAlign: TextAlign.center)),
                           DataCell(Text(q2)),
 
                           ],),
 
                           DataRow(
                           cells: [
-                           DataCell(Text(getTranslated(context, 'elctorlite'))),
-                          DataCell(Text(q3)),
+                           DataCell(Text(getTranslated(context, 'elctorlite'),textAlign: TextAlign.center)),
+                          DataCell(Text(q4,textAlign: TextAlign.center)),
 
                           ],),
 
 
                           DataRow(
                           cells: [
-                           DataCell( Text(getTranslated(context, 'electiroliteexits'))),
-                          DataCell(Text(q4)),
+                           DataCell( Text(getTranslated(context, 'electiroliteexits'),textAlign: TextAlign.center)),
+                          DataCell(Text(q3,textAlign: TextAlign.center)),
 
                           ],),
 
@@ -491,14 +499,15 @@ class _ComInfoViewViewState extends State<ComInfoView> {
                                   List<ReportComModel> dblist = snapshot.data ?? [] ;
 
                                   return DataTable(
+
                                     columns:  [
 
 
 
-                                      DataColumn(label: Text(getTranslated(context, 'Item'))),
-                                      DataColumn(label: Text(getTranslated(context, 'analysis'))),
-                                      DataColumn(label: Text(getTranslated(context, 'now'))),
-                                      DataColumn(label: Text(getTranslated(context, 'status'))),
+                                      DataColumn(label:   Text(getTranslated(context, 'Item'),textAlign: TextAlign.center)),
+                                      DataColumn(label: Text(getTranslated(context, 'analysis'),textAlign: TextAlign.center)),
+                                      DataColumn(label: Text(getTranslated(context, 'now'),textAlign: TextAlign.center)),
+
 
                                     ],
                                     rows: dblist.asMap().entries.map((entry) {
@@ -509,20 +518,65 @@ class _ComInfoViewViewState extends State<ComInfoView> {
                                       return DataRow(
                                         cells: [
 
-                                          DataCell(Text(model.elementName.toString())),
-                                          DataCell(Text(model.sumAnaBodyQty.toStringAsFixed(3))),
+                                          DataCell(
+                                              model.status == "Lower" ?
+                                              Text(
+                                                  model.elementName.toString(),
+                                              style: TextStyle(
+                                                color: Colors.red
+                                              )
+                                              ,textAlign: TextAlign.center)
+                                                  :
+                                              Text(
+                                                  model.elementName.toString(),
+                                                  style: TextStyle(
+                                                      color: Colors.green
+                                                  ),
+                                                  textAlign: TextAlign.center)
 
-                                          DataCell(Text((model.sumElementItem ?? 0).toStringAsFixed(3))),
+                                          ),
+                                          DataCell(
+
+                                              model.status == "Lower" ?
+                                              Text(model.sumAnaBodyQty.toStringAsFixed(3) ,
+                                                  style: TextStyle(
+                                      color: Colors.red
+                                      ),
+                                                  textAlign: TextAlign.center)
+                                          :
+                                              Text(model.sumAnaBodyQty.toStringAsFixed(3),
+                                                  style: TextStyle(
+                                                      color: Colors.green
+                                                  ),
+                                                  textAlign: TextAlign.center)
 
 
-
-
-
-
+                                          ),
 
                                           DataCell(
 
-                                              Text((model.status ??''))),
+                                              model.status == "Lower" ?
+                                              Text((model.sumElementItem ?? 0).toStringAsFixed(3),
+                                                  style: TextStyle(
+                                                      color: Colors.red
+                                                  ),
+
+                                                  textAlign: TextAlign.center)
+                                                  :
+                                              Text((model.sumElementItem ?? 0).toStringAsFixed(3),
+                                                  style: TextStyle(
+                                                      color: Colors.green
+                                                  ),
+                                                  textAlign: TextAlign.center)
+                                          ),
+
+
+
+
+
+
+
+
 
 
 
@@ -583,9 +637,9 @@ class _ComInfoViewViewState extends State<ComInfoView> {
                                     child: Text(getTranslated(context, 'Item')),
                                   )),
 
-                                  DataColumn(label: Text(getTranslated(context, 'price'))),
-                                  DataColumn(label: Text(getTranslated(context, 'quantity'))),
-                                  DataColumn(label: Text(getTranslated(context, 'options'))),
+                                  DataColumn(label: Text(getTranslated(context, 'price'),textAlign: TextAlign.center)),
+                                  DataColumn(label: Text(getTranslated(context, 'quantity'),textAlign: TextAlign.center)),
+                                  DataColumn(label: Text(getTranslated(context, 'options'),textAlign: TextAlign.center)),
                                  // DataColumn(label: Text(getTranslated(context, 'code'))),
 
 
@@ -598,10 +652,10 @@ class _ComInfoViewViewState extends State<ComInfoView> {
                                   return DataRow(
                                     cells: [
 
-                                      DataCell(Text(model.item_name.toString())),
+                                      DataCell(Text(model.item_name.toString(),textAlign: TextAlign.center)),
 
-                                      DataCell(Text(model.total_price.toString())),
-                                      DataCell(Text(model.com_body_qty.toString())),
+                                      DataCell(Text(model.total_price.toString(),textAlign: TextAlign.center)),
+                                      DataCell(Text(model.com_body_qty.toString(),textAlign: TextAlign.center)),
                                       DataCell(Row(
                                         children: [
                                           GestureDetector(

@@ -45,7 +45,7 @@ class _MyAppState extends State<MyApp> {
 
       onGenerateRoute: RouteGenerator.getRoute,
       debugShowCheckedModeBanner: false,
-      initialRoute: Routes.mainRoute,
+      initialRoute: Routes.loginRoute,
       theme: getApplicationTheme(),);
   }
 }

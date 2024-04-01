@@ -10,6 +10,7 @@ import 'package:feedinsta/view/groupComAnalysis/groupComAnalysisAdd_view.dart';
 import 'package:feedinsta/view/groupComAnalysis/groupComAnlysis_view.dart';
 import 'package:feedinsta/view/groupRaw/groupRawAdd_view.dart';
 import 'package:feedinsta/view/groupRaw/groupRaw_view.dart';
+import 'package:feedinsta/view/login/loginView.dart';
 import 'package:feedinsta/view/raw_item/addItem.dart';
 import 'package:feedinsta/view/raw_item/itemList.dart';
 import 'package:feedinsta/view/widget/Navbottom.dart';
@@ -111,7 +112,8 @@ class RouteGenerator {
       case Routes.addGroupCom:
         return MaterialPageRoute(builder: (_) => const GroupComAdd());
 
-
+      case Routes.loginRoute:
+        return MaterialPageRoute(builder: (_) => const LoginView());
 
 
 

@@ -33,7 +33,7 @@ class _MainViewState extends State<MainView> {
           color: ColorManager.white,
           child:   Center(
             child: Container(
-              margin: const EdgeInsets.all(8),
+              margin: const EdgeInsets.only(top: 150,right: 8,left: 8,bottom: 8),
               child:  Column(
                 children: <Widget>[
                  const SizedBox(height: 20,),

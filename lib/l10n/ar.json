@@ -77,5 +77,10 @@
   "value": "القبمة",
   "now": "الحالي",
   "status": "الحالة",
-  "entergroupana": "ادخل مجموعة تحليل سلالة"
+  "entergroupana": "ادخل مجموعة تحليل سلالة",
+  "loginMsg": "مرحبا بك",
+  "logintouraccount": "سجل دخول الي حسابك",
+  "entermail": "ادخل اسم المستخدم",
+  "enterpassword": "ادخل كلمة المرور",
+  "donthaveaccount": "ليس لديك حساب ؟"
 }

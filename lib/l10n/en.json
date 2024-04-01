@@ -77,5 +77,10 @@
   "indicator": "indicator",
   "value": "value",
   "now": "now",
-  "status": "status"
+  "status": "status",
+  "loginMsg": "Welcome",
+  "logintouraccount": "Login to Your Account",
+  "entermail": "Enter Username",
+  "enterpassword": "Enter Password",
+  "donthaveaccount": "Don't Have Account?"
 }

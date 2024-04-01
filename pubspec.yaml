@@ -43,6 +43,10 @@ dependencies:
   shared_preferences: ^2.2.2
   intl: ^0.18.1
   restart_app: ^1.2.1
+  firebase_core: ^2.16.0
+  firebase_auth: ^4.10.0
+  cloud_firestore: ^4.15.9
+
 
 
 dev_dependencies:
