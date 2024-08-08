@@ -6,6 +6,7 @@
 
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:feedinsta/view/com/comListView.dart';
+import 'package:feedinsta/view/contact/ContactView.dart';
 import 'package:feedinsta/view/groupCom/groupCom_view.dart';
 import 'package:feedinsta/view/groupRaw/groupRaw_view.dart';
 import 'package:flutter/material.dart';
@@ -42,12 +43,11 @@ class _BottomNavBarDemoState extends State<BottomNavBarDemo> {
     switch (pos) {
       case 0:
         return new MainView();
-      case 1:
-        return new GroupComListView();
-      case 2:
-        return new GroupListView();
 
-      case 3:
+      case 1:
+        return new ContactView();
+
+      case 2:
         return  WidgetsBinding.instance.addPostFrameCallback((_) {
           Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => ProfileView()));
         });
@@ -77,7 +77,7 @@ class _BottomNavBarDemoState extends State<BottomNavBarDemo> {
         items: const <Widget>[
           Icon(Icons.home, size: 30),
           Icon(Icons.favorite_border, size: 30),
-          Icon(Icons.supervised_user_circle, size: 30),
+
           Icon(Icons.perm_contact_cal, size: 30),
 
 

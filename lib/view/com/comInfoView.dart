@@ -633,7 +633,7 @@ class _ComInfoViewViewState extends State<ComInfoView> {
                               return DataTable(
                                 columns:  [
                                   DataColumn(label: Padding(
-                                    padding: const EdgeInsets.only(right: 1,left: 1),
+                                    padding: const EdgeInsets.only(right: 3,left: 3),
                                     child: Text(getTranslated(context, 'Item')),
                                   )),
 

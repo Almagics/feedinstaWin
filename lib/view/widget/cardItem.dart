@@ -53,7 +53,7 @@ class CardWithImageAndText extends StatelessWidget {
                       ),
                     ),
                   ),
-                  Padding(
+                /*  Padding(
                     padding: const EdgeInsets.all(3.0),
                     child: Row(
                       children: [
@@ -65,7 +65,7 @@ class CardWithImageAndText extends StatelessWidget {
                       ],
                     ),
                   )
-
+*/
 
                 ],
               ),
