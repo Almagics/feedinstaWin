@@ -115,9 +115,10 @@ class _LoginViewState extends State<LoginView> {
                     child: ElevatedButton(
                       onPressed: () {
                         //pageController.animateToPage(getNextIndex, duration: const Duration(microseconds: AppConstants.splashDelay), curve: Curves.bounceInOut);
-                     //  Navigator.pushReplacementNamed(context, Routes.mainRoute);
+                      // Navigator.pushReplacementNamed(context, Routes.mainRoute);
                         _signin();
                       },
+
 
 
                       style: Theme.of(context).elevatedButtonTheme.style,

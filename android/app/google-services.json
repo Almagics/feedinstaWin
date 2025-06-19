@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "70275861613",
+    "project_id": "feedinsta-7d871",
+    "storage_bucket": "feedinsta-7d871.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:70275861613:android:fe859ddfba1a4e3ca54364",
+        "android_client_info": {
+          "package_name": "com.magicsolutionseg.feedinsta"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCbemxYLOj1HY3ti6Q9c5M49udD6k7LeGc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
